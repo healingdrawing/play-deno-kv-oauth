@@ -2,6 +2,10 @@
 /** @jsxFrag  Fragment */
 import { Hono } from 'https://deno.land/x/hono/mod.ts';
 import { Context } from "https://deno.land/x/hono@v4.3.11/mod.ts";
+import { createGoogleOAuthConfig } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
+import { OAuth2Client } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts";
+
+import { type RedirectStatusCode } from "https://deno.land/x/hono@v4.3.11/utils/http-status.ts";
 import {
     createGitHubOAuth2Client,
     getSessionAccessToken,
@@ -11,15 +15,22 @@ import {
     signOut,
 } from "https://deno.land/x/deno_kv_oauth/mod.ts";
 // import { jsx, html, memo } from 'https://deno.land/x/hono/middleware.ts'
-import { jsx, memo } from 'https://deno.land/x/hono/middleware.ts'
+import { jsx, memo } from 'https://deno.land/x/hono@v4.3.11/middleware.ts'
 import { html } from "https://deno.land/x/hono@v4.3.11/helper/html/index.ts";
 import { loadSync } from "https://deno.land/std@0.194.0/dotenv/mod.ts";
 loadSync({ export: true });
 
-const oauthClient = createGitHubOAuth2Client({
-  /* Multiple uri's for GitHub require this to be set https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/about-the-user-authorization-callback-url */
-  redirectUri: "https://hono-deno-kv-oauth.deno.dev/callback"
+const oauth_config = createGoogleOAuthConfig({
+  redirectUri: "http://localhost:8000/callback",
+  scope: "https://www.googleapis.com/auth/userinfo.profile"
 });
+
+const oauth_client = new OAuth2Client(oauth_config);
+
+// const oauthClient = createGitHubOAuth2Client({
+//   /* Multiple uri's for GitHub require this to be set https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/about-the-user-authorization-callback-url */
+//   redirectUri: "https://hono-deno-kv-oauth.deno.dev/callback"
+// });
 
 type GitHubUser = {
     login: string;
@@ -130,19 +141,19 @@ app.get('/', async (c:Context) => {
 app.get("/signin", async (c:Context) => {
   const response = await signIn(c.req.raw, oauthClient);
   c.header("set-cookie", response.headers.get("set-cookie")!);
-  return c.redirect(response.headers.get("location")!, response.status);
+  return c.redirect(response.headers.get("location")!, response.status as RedirectStatusCode);
 });
 
 app.get("/callback", async (c:Context) => {
   const { response, accessToken } = await handleCallback(c.req.raw, oauthClient);
   c.header("set-cookie", response.headers.get("set-cookie")!);
-  return c.redirect(response.headers.get("location")!, response.status);
+  return c.redirect(response.headers.get("location")!, response.status as RedirectStatusCode);
 });
 
 app.get("/signout", async (c:Context) => {
   const response = await signOut(c.req.raw);
   c.header("set-cookie", response.headers.get("set-cookie")!);
-  return c.redirect(response.headers.get("location")!, response.status);
+  return c.redirect(response.headers.get("location")!, response.status as RedirectStatusCode);
 });
 
 Deno.serve(app.fetch)
