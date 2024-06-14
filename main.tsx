@@ -13,6 +13,7 @@ import {
 import { jsx, memo } from 'https://deno.land/x/hono@v4.3.11/middleware.ts'
 import { html } from "https://deno.land/x/hono@v4.3.11/helper/html/index.ts";
 import { loadSync } from "https://deno.land/std@0.194.0/dotenv/mod.ts";
+import { Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts";
 loadSync({ export: true });
 
 const oauth_config = createGoogleOAuthConfig({
@@ -73,14 +74,24 @@ const Footer = memo(() => {
 
 const app = new Hono()
 
+let g_tokens:Tokens; // my weird attempt to store tokens somewhere before use inside different app.get..
+var g_tok:Tokens;
+
 app.get('/', async (c:Context) => {
   const session_id = getSessionId(c.req.raw);
   const is_signed_in = session_id !== undefined; //has session id cookie
   // console.log({is_signed_in})
+
+  const access_token = g_tokens.accessToken;
+
+  // !!! how to get google user name or login from .profile using oauth2 deno library methods?
+
+  /* THIS IS OLD CODE PART, WITH DEPRECATED METHODS AND FOR GITHUB. was found in some examples.
   const accessToken = is_signed_in
       ? await getSessionAccessToken(oauthClient, session_id)
       : null;
   const githubUser = accessToken ? await getGitHubUser(accessToken) : null;
+  */
 
   if (!is_signed_in) {
     return c.html(`
@@ -117,6 +128,7 @@ app.get("/signin", async (c:Context) => {
 
 app.get("/callback", async (c:Context) => {
   const { response, sessionId, tokens } = await handleCallback(c.req.raw, oauth_config);
+  g_tokens = {...tokens};
   c.header("set-cookie", response.headers.get("set-cookie")!);
   return c.redirect(response.headers.get("location")!, response.status as RedirectStatusCode);
 });
