@@ -79,11 +79,19 @@ const Footer = memo(() => {
 
 const app = new Hono()
 
+async function fetchGoogleProfileData(accessToken: string): Promise<string> {
+  const url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + accessToken;
+  const response = await fetch(url, { method: "GET" });
+  const data = await response.json();
+  console.log("data inside fetch", data);
+  return data || "some crap in fetch";
+}
+
 app.get('/', async (c:Context) => {
   const session_id = await getSessionId(c.req.raw)
   .then(entry => entry as string | undefined);
   console.log(session_id);
-  
+
   const is_signed_in = session_id !== undefined; //has session id cookie
   // console.log({is_signed_in})
   
@@ -96,7 +104,7 @@ app.get('/', async (c:Context) => {
             <h1>Hono + Deno KV OAuth</h1>
         </header>
         <main>
-          <a href="/signin">Login</a>
+          <a href="/signin">Login using google</a>
         </main>
         <Footer />
       </Html>
@@ -108,13 +116,17 @@ app.get('/', async (c:Context) => {
   } else {
     const access_token = await kvdb.get<Tokens>(["tokens", session_id])
     .then(entry => entry.value as Tokens | undefined);
+    console.log("access_token", access_token);
+
+    const data = await fetchGoogleProfileData(access_token?.accessToken!)
+    console.log("final data", data);
   }
   
 
   return c.html(`
     <Html>
       <header>
-          <h1>Welcome, {githubUser.login} 🦖</h1>
+          <h1>Welcome, {data} 🦖</h1>
       </header>
       <main>
         <a href="/signout">Logout</a>
