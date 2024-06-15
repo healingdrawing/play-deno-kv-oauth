@@ -19,7 +19,7 @@ loadSync({ export: true });
 import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
 const db_path = join(Deno.cwd(), "db/kvdb/db");
 console.log(db_path);
-const _kv = await Deno.openKv(db_path);
+const kvdb = await Deno.openKv(db_path);
 
 const oauth_config = createGoogleOAuthConfig({
   redirectUri: "http://localhost:8000/callback",
@@ -79,15 +79,11 @@ const Footer = memo(() => {
 
 const app = new Hono()
 
-let g_tokens:Tokens; // my weird attempt to store tokens somewhere before use inside different app.get..
-
 app.get('/', async (c:Context) => {
   const session_id = getSessionId(c.req.raw);
   const is_signed_in = session_id !== undefined; //has session id cookie
   // console.log({is_signed_in})
   
-  const access_token = g_tokens.accessToken;
-
   // !!! how to get google user name or login from .profile using oauth2 deno_kv_oauth library methods?
 
   if (!is_signed_in) {
@@ -103,6 +99,14 @@ app.get('/', async (c:Context) => {
       </Html>
     `)
   }
+
+  if (typeof session_id !== 'string'){
+    console.log("some crap with session_id . type of", typeof session_id);
+  } else {
+    const access_token = await kvdb.get<Tokens>(["tokens", session_id])
+    .then(entry => entry.value as Tokens | undefined);
+  }
+  
 
   return c.html(`
     <Html>
@@ -125,7 +129,9 @@ app.get("/signin", async (c:Context) => {
 
 app.get("/callback", async (c:Context) => {
   const { response, sessionId, tokens } = await handleCallback(c.req.raw, oauth_config);
-  g_tokens = {...tokens};
+  
+  await kvdb.set(["tokens",sessionId], tokens);
+  
   c.header("set-cookie", response.headers.get("set-cookie")!);
   return c.redirect(response.headers.get("location")!, response.status as RedirectStatusCode);
 });
