@@ -80,7 +80,10 @@ const Footer = memo(() => {
 const app = new Hono()
 
 app.get('/', async (c:Context) => {
-  const session_id = getSessionId(c.req.raw);
+  const session_id = await getSessionId(c.req.raw)
+  .then(entry => entry as string | undefined);
+  console.log(session_id);
+  
   const is_signed_in = session_id !== undefined; //has session id cookie
   // console.log({is_signed_in})
   
