@@ -1,3 +1,4 @@
+
 import { Tokens } from "../deps.ts";
 
 import { kvdb } from "../deps.ts";
@@ -21,17 +22,9 @@ export  const home_handler = async (c:Context) => {
   // !!! how to get google user name or login from .profile using oauth2 deno_kv_oauth library methods?
 
   if (!is_signed_in) {
-    return c.html(`
-      <Html>
-        <header>
-            <h1>Hono + Deno KV OAuth</h1>
-        </header>
-        <main>
-          <a href="/signin">Login using google</a>
-        </main>
-        <Footer />
-      </Html>
-    `)
+    return c.html(
+      await eta.renderAsync("index", {})
+    )
   }
 
   let data:Google_Profile_Data | undefined;
@@ -47,16 +40,7 @@ export  const home_handler = async (c:Context) => {
     console.log("final data", data);
   }
   
-
-  return c.html(`
-    <Html>
-      <header>
-          <h1>Welcome, ${JSON.stringify(data)} 🦖</h1>
-      </header>
-      <main>
-        <a href="/signout">Logout</a>
-      </main>
-      <Footer />
-    </Html>
-  `)
+  return c.html(
+    await eta.renderAsync("profile", data? data : {})
+  );
 }
