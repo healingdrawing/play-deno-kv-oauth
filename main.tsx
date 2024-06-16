@@ -1,6 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag  Fragment */
 import { Hono, Context } from "https://deno.land/x/hono@v4.3.11/mod.ts";
+import { Eta } from "https://deno.land/x/eta@v3.4.0/src/index.ts";
 
 import { type RedirectStatusCode } from "https://deno.land/x/hono@v4.3.11/utils/http-status.ts";
 import {
@@ -11,7 +12,7 @@ import {
     signOut,
 } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 
-import { fetch_google_profile_data, Google_Profile_Data } from "./deps.ts";
+import { fetch_google_profile_data, Google_Profile_Data, home_handler } from "./deps.ts";
 
 import { jsx, memo } from 'https://deno.land/x/hono@v4.3.11/middleware.ts'
 import { html } from "https://deno.land/x/hono@v4.3.11/helper/html/index.ts";
@@ -20,9 +21,10 @@ import { Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts";
 loadSync({ export: true });
 
 import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
+export const eta = new Eta({ views: join(Deno.cwd(), "templates") });
 const db_path = join(Deno.cwd(), "db/kvdb/db");
 console.log(db_path);
-const kvdb = await Deno.openKv(db_path);
+export const kvdb = await Deno.openKv(db_path);
 
 const oauth_config = createGoogleOAuthConfig({
   redirectUri: "http://localhost:8000/callback",
@@ -84,56 +86,7 @@ const app = new Hono()
 
 
 
-app.get('/', async (c:Context) => {
-  const session_id = await getSessionId(c.req.raw)
-  .then(entry => entry as string | undefined);
-  console.log(session_id);
-
-  const is_signed_in = session_id !== undefined; //has session id cookie
-  console.log({is_signed_in})
-  
-  // !!! how to get google user name or login from .profile using oauth2 deno_kv_oauth library methods?
-
-  if (!is_signed_in) {
-    return c.html(`
-      <Html>
-        <header>
-            <h1>Hono + Deno KV OAuth</h1>
-        </header>
-        <main>
-          <a href="/signin">Login using google</a>
-        </main>
-        <Footer />
-      </Html>
-    `)
-  }
-
-  let data:Google_Profile_Data | undefined;
-
-  if (typeof session_id !== 'string'){
-    console.log("some crap with session_id . type of", typeof session_id);
-  } else {
-    const access_token = await kvdb.get<Tokens>(["tokens", session_id])
-    .then(entry => entry.value as Tokens | undefined);
-    console.log("access_token", access_token);
-
-    data = await fetch_google_profile_data(access_token?.accessToken!)
-    console.log("final data", data);
-  }
-  
-
-  return c.html(`
-    <Html>
-      <header>
-          <h1>Welcome, ${JSON.stringify(data)} 🦖</h1>
-      </header>
-      <main>
-        <a href="/signout">Logout</a>
-      </main>
-      <Footer />
-    </Html>
-  `)
-})
+app.get('/', home_handler);
 
 app.get("/signin", async (c:Context) => {
   const response = await signIn(c.req.raw, oauth_config);
