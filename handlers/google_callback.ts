@@ -9,7 +9,7 @@ import {
   google_oauth_config,
 } from "../deps.ts";
 
-export const callback_handler = async (c:Context) => {
+export const google_callback_handler = async (c:Context) => {
   const { response, sessionId, tokens } = await handleCallback(c.req.raw, google_oauth_config);
   
   await kvdb.set(["tokens",sessionId], tokens);

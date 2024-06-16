@@ -8,10 +8,10 @@ import {
     signOut,
 } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 
-import { home_handler, signin_handler } from "./deps.ts";
+import { home_handler, google_signin_handler } from "./deps.ts";
 
 import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
-import { callback_handler } from "./handlers/callback.ts";
+import { google_callback_handler } from "./handlers/google_callback.ts";
 export const eta = new Eta({ views: join(Deno.cwd(), "templates") });
 // const db_path = join(Deno.cwd(), "kvdb");
 // console.log(db_path);
@@ -21,9 +21,9 @@ const app = new Hono()
 
 app.get('/', home_handler);
 
-app.get("/signin", signin_handler);
+app.get("/signin", google_signin_handler);
 
-app.get("/callback", callback_handler);
+app.get("/callback", google_callback_handler);
 
 app.get("/signout", async (c:Context) => {
   const session_id = await getSessionId(c.req.raw)

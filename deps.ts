@@ -23,4 +23,4 @@ export { eta } from "./main.ts";
 
 export { home_handler } from "./handlers/home.ts";
 
-export { signin_handler } from "./handlers/signin.ts";
+export { google_signin_handler } from "./handlers/google_signin.ts";
