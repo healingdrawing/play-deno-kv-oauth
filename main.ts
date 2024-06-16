@@ -15,9 +15,9 @@ const app = new Hono()
 
 app.get('/', home_handler);
 
-app.get("/signin", google_signin_handler);
+app.get("/signin_google", google_signin_handler);
 
-app.get("/callback", google_callback_handler);
+app.get("/callback_google", google_callback_handler);
 
 app.get("/signout", google_signout_handler);
 
