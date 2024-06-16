@@ -12,4 +12,4 @@ export { type Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts";
 
 export { eta } from "./main.tsx";
 
-export { home_handler } from "./handlers/home.ts"
+export { home_handler } from "./handlers/home.tsx"
