@@ -93,7 +93,7 @@ app.get('/', async (c:Context) => {
   console.log(session_id);
 
   const is_signed_in = session_id !== undefined; //has session id cookie
-  // console.log({is_signed_in})
+  console.log({is_signed_in})
   
   // !!! how to get google user name or login from .profile using oauth2 deno_kv_oauth library methods?
 
@@ -152,6 +152,17 @@ app.get("/callback", async (c:Context) => {
 });
 
 app.get("/signout", async (c:Context) => {
+  const session_id = await getSessionId(c.req.raw)
+  .then(entry => entry as string | undefined);
+  console.log("signout session_id", session_id);
+
+  if (session_id !== undefined){
+    await kvdb.delete(["tokens", session_id]);
+  } else {
+    console.log("signout failed");
+  }
+
+
   const response = await signOut(c.req.raw);
   c.header("set-cookie", response.headers.get("set-cookie")!);
   return c.redirect(response.headers.get("location")!, response.status as RedirectStatusCode);
