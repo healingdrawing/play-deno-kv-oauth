@@ -1,3 +1,13 @@
+import { createGoogleOAuthConfig } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
+
+import { loadSync } from "../deps.ts";
+loadSync({ export: true });
+
+export const google_oauth_config = createGoogleOAuthConfig({
+  redirectUri: "http://localhost:8000/callback",
+  scope: "https://www.googleapis.com/auth/userinfo.profile"
+});
+
 export interface Google_Profile_Data {
   id: string;
   name: string;

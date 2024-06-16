@@ -1,5 +1,4 @@
-/** @jsx jsx */
-/** @jsxFrag  Fragment */
+
 import { Hono, Context } from "https://deno.land/x/hono@v4.3.11/mod.ts";
 import { Eta } from "https://deno.land/x/eta@v3.4.0/src/index.ts";
 
@@ -8,20 +7,16 @@ import {
     createGoogleOAuthConfig,  
     getSessionId,
     handleCallback,
-    signIn,
     signOut,
 } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 
-import { home_handler } from "./deps.ts";
-
-import { loadSync } from "https://deno.land/std@0.194.0/dotenv/mod.ts";
-loadSync({ export: true });
+import { home_handler, signin_handler } from "./deps.ts";
 
 import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
 export const eta = new Eta({ views: join(Deno.cwd(), "templates") });
-const db_path = join(Deno.cwd(), "db/kvdb/db");
+const db_path = join(Deno.cwd(), "./db");
 console.log(db_path);
-export const kvdb = await Deno.openKv(db_path);
+export const kvdb = await Deno.openKv("db");
 
 const oauth_config = createGoogleOAuthConfig({
   redirectUri: "http://localhost:8000/callback",
@@ -31,15 +26,9 @@ const oauth_config = createGoogleOAuthConfig({
 
 const app = new Hono()
 
-
-
 app.get('/', home_handler);
 
-app.get("/signin", async (c:Context) => {
-  const response = await signIn(c.req.raw, oauth_config);
-  c.header("set-cookie", response.headers.get("set-cookie")!);
-  return c.redirect(response.headers.get("location")!, response.status as RedirectStatusCode);
-});
+app.get("/signin", signin_handler);
 
 app.get("/callback", async (c:Context) => {
   const { response, sessionId, tokens } = await handleCallback(c.req.raw, oauth_config);

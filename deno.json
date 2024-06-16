@@ -1,7 +1,7 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.tsx",
-    "test": "deno run --inspect-wait --allow-all --unstable-kv main_test.tsx",
-    "bang": "deno run --allow-all --unstable-kv main.tsx"
+    "dev": "deno run --watch main.ts",
+    "test": "deno run --inspect-wait --allow-all --unstable-kv main_test.ts",
+    "bang": "deno run --allow-all --unstable-kv main.ts"
   }
 }
