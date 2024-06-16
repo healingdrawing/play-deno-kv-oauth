@@ -10,8 +10,11 @@ export {
 
 export { type Context } from "https://deno.land/x/hono@v4.3.11/mod.ts";
 
+export { type RedirectStatusCode } from "https://deno.land/x/hono@v4.3.11/utils/http-status.ts";
+
 export {
   getSessionId,
+  handleCallback,
 } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 
 export { type Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts";
