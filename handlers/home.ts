@@ -19,8 +19,6 @@ export  const home_handler = async (c:Context) => {
   const is_signed_in = session_id !== undefined; //has session id cookie
   console.log({is_signed_in})
   
-  // !!! how to get google user name or login from .profile using oauth2 deno_kv_oauth library methods?
-
   if (!is_signed_in) {
     return c.html(
       await eta.renderAsync("index", {})
