@@ -10,6 +10,9 @@ import {
     signIn,
     signOut,
 } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
+
+import { fetch_google_profile_data, Google_Profile_Data } from "./deps.ts";
+
 import { jsx, memo } from 'https://deno.land/x/hono@v4.3.11/middleware.ts'
 import { html } from "https://deno.land/x/hono@v4.3.11/helper/html/index.ts";
 import { loadSync } from "https://deno.land/std@0.194.0/dotenv/mod.ts";
@@ -79,13 +82,7 @@ const Footer = memo(() => {
 
 const app = new Hono()
 
-async function fetchGoogleProfileData(accessToken: string): Promise<string> {
-  const url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + accessToken;
-  const response = await fetch(url, { method: "GET" });
-  const data = await response.json();
-  console.log("data inside fetch", data);
-  return data || "some crap in fetch";
-}
+
 
 app.get('/', async (c:Context) => {
   const session_id = await getSessionId(c.req.raw)
@@ -111,7 +108,7 @@ app.get('/', async (c:Context) => {
     `)
   }
 
-  let data = {};
+  let data:Google_Profile_Data | undefined;
 
   if (typeof session_id !== 'string'){
     console.log("some crap with session_id . type of", typeof session_id);
@@ -120,7 +117,7 @@ app.get('/', async (c:Context) => {
     .then(entry => entry.value as Tokens | undefined);
     console.log("access_token", access_token);
 
-    data = await fetchGoogleProfileData(access_token?.accessToken!)
+    data = await fetch_google_profile_data(access_token?.accessToken!)
     console.log("final data", data);
   }
   
