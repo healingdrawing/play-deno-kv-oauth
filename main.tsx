@@ -111,6 +111,8 @@ app.get('/', async (c:Context) => {
     `)
   }
 
+  let data = {};
+
   if (typeof session_id !== 'string'){
     console.log("some crap with session_id . type of", typeof session_id);
   } else {
@@ -118,7 +120,7 @@ app.get('/', async (c:Context) => {
     .then(entry => entry.value as Tokens | undefined);
     console.log("access_token", access_token);
 
-    const data = await fetchGoogleProfileData(access_token?.accessToken!)
+    data = await fetchGoogleProfileData(access_token?.accessToken!)
     console.log("final data", data);
   }
   
@@ -126,7 +128,7 @@ app.get('/', async (c:Context) => {
   return c.html(`
     <Html>
       <header>
-          <h1>Welcome, {data} 🦖</h1>
+          <h1>Welcome, ${JSON.stringify(data)} 🦖</h1>
       </header>
       <main>
         <a href="/signout">Logout</a>
