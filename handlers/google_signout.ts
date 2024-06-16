@@ -1,7 +1,7 @@
 import { signOut } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 import { Context, RedirectStatusCode, getSessionId, kvdb } from "../deps.ts";
 
-async (c:Context) => {
+export const google_signout_handler = async (c:Context) => {
   const session_id = await getSessionId(c.req.raw)
   .then(entry => entry as string | undefined);
   console.log("signout session_id", session_id);
