@@ -1,5 +1,6 @@
 
-import { Tokens , kvdb , Context , getSessionId, Google_Profile_Data, fetch_google_profile_data , eta } from "../deps.ts";
+import { Tokens , kvdb , Context , getSessionId , eta,
+  Google_Profile_Data, fetch_google_profile_data, fetch_x_profile_data } from "../deps.ts";
 
 export  const home_handler = async (c:Context) => {
   const session_id = await getSessionId(c.req.raw)
@@ -15,7 +16,9 @@ export  const home_handler = async (c:Context) => {
     )
   }
 
-  let data:Google_Profile_Data | undefined;
+  const provider = await kvdb.get(["oauth-providers",session_id]) as unknown as string; // google or x. wth, it looks dirty
+
+  let data:Google_Profile_Data | string | undefined;
 
   if (typeof session_id !== 'string'){
     console.log("some crap with session_id . type of", typeof session_id);
@@ -24,7 +27,13 @@ export  const home_handler = async (c:Context) => {
     .then(entry => entry.value as Tokens | undefined);
     console.log("access_token", access_token);
 
-    data = await fetch_google_profile_data(access_token?.accessToken!)
+    if (provider === "google"){
+      data = await fetch_google_profile_data(access_token?.accessToken!)
+    } else if (provider === "x") {
+      data = await fetch_x_profile_data(access_token?.accessToken!)
+    } else {
+      data = "wrong 'provider' value"; // should not happen
+    }
     console.log("final data", data);
   }
   

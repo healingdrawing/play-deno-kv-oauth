@@ -8,6 +8,7 @@ export const google_signout_handler = async (c:Context) => {
 
   if (session_id !== undefined){
     await kvdb.delete(["tokens", session_id]);
+    await kvdb.delete(["oauth2-providers", session_id]);
   } else {
     console.log("signout failed");
   }
