@@ -10,6 +10,7 @@
   </header>
   <main>
     <a href="/signin_google">Login using google</a>
+    <a href="/signin_x">Login using X</a>
   </main>
 </body>
 </html>

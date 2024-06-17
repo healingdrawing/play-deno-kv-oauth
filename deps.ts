@@ -5,8 +5,14 @@ export { loadSync } from "https://deno.land/std@0.194.0/dotenv/mod.ts";
 export {
   google_oauth_config,
   fetch_google_profile_data,
-  type Google_Profile_Data
+  type Google_Profile_Data,
 } from "./oauth2/google.ts";
+
+export {
+  x_oauth_config,
+  fetch_x_profile_data,
+  type X_Profile_Data,
+} from "./oauth2/x.ts"
 
 export { type Context } from "https://deno.land/x/hono@v4.3.11/mod.ts";
 
@@ -24,5 +30,9 @@ export { eta } from "./main.ts";
 export { home_handler } from "./handlers/home.ts";
 
 export { google_signin_handler } from "./handlers/google_signin.ts";
+export { x_signin_handler } from "./handlers/x_signin.ts";
+
+export { google_callback_handler } from "./handlers/google_callback.ts";
+export { x_callback_handler } from "./handlers/x_callback.ts";
 
 export { google_signout_handler } from "./handlers/google_signout.ts"

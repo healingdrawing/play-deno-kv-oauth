@@ -1,15 +1,5 @@
 
-import { Tokens } from "../deps.ts";
-
-import { kvdb } from "../deps.ts";
-
-import { Context } from "../deps.ts";
-
-import { getSessionId,} from "../deps.ts";
-
-import { Google_Profile_Data, fetch_google_profile_data } from "../deps.ts";
-
-import { eta } from "../deps.ts";
+import { Tokens , kvdb , Context , getSessionId, Google_Profile_Data, fetch_google_profile_data , eta } from "../deps.ts";
 
 export  const home_handler = async (c:Context) => {
   const session_id = await getSessionId(c.req.raw)
