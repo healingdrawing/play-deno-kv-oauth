@@ -17,8 +17,8 @@ export interface Google_Profile_Data {
 }
 
 // consider to return specific type/interface etc later
-export async function fetch_google_profile_data(accessToken: string): Promise<Google_Profile_Data> {
-  const url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + accessToken;
+export async function fetch_google_profile_data(access_token: string): Promise<Google_Profile_Data> {
+  const url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token;
   const response = await fetch(url, { method: "GET" });
   const data = await response.json();
   console.log("data inside fetch", data);

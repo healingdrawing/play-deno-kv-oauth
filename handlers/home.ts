@@ -16,7 +16,9 @@ export  const home_handler = async (c:Context) => {
     )
   }
 
-  const provider = await kvdb.get(["oauth-providers",session_id]) as unknown as string; // google or x. wth, it looks dirty
+  const provider = await kvdb.get(["oauth2-providers",session_id])
+  .then(entry => entry.value as string | undefined);
+    console.log("provider", provider); // google or x. wth, it looks dirty
 
   let data:Google_Profile_Data | string | undefined;
 
@@ -32,7 +34,7 @@ export  const home_handler = async (c:Context) => {
     } else if (provider === "x") {
       data = await fetch_x_profile_data(access_token?.accessToken!)
     } else {
-      data = "wrong 'provider' value"; // should not happen
+      data = "wrong 'provider' value: " + provider; // should not happen
     }
     console.log("final data", data);
   }
