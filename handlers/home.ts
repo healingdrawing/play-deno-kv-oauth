@@ -1,6 +1,8 @@
 
 import { Tokens , kvdb , Context , getSessionId , eta,
-  Google_Profile_Data, fetch_google_profile_data, fetch_x_profile_data } from "../deps.ts";
+  Google_Profile_Data, fetch_google_profile_data,
+  X_Profile_Data, fetch_x_profile_data,
+} from "../deps.ts";
 
 export  const home_handler = async (c:Context) => {
   const session_id = await getSessionId(c.req.raw)
@@ -20,7 +22,7 @@ export  const home_handler = async (c:Context) => {
   .then(entry => entry.value as string | undefined);
     console.log("provider", provider); // google or x. wth, it looks dirty
 
-  let data:Google_Profile_Data | string | undefined;
+  let data:Google_Profile_Data | X_Profile_Data | string | undefined;
 
   if (typeof session_id !== 'string'){
     console.log("some crap with session_id . type of", typeof session_id);
