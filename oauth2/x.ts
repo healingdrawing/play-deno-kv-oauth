@@ -4,7 +4,7 @@ import { loadSync, z } from "../deps.ts";
 loadSync({ export: true });
 
 export const x_oauth_config = createTwitterOAuthConfig({
-  redirectUri: "http://localhost:8000/callback_x",
+  redirectUri: "http://localhost:8000/callback-x",
   scope: ["tweet.read", "users.read"] // in some reasons "tweet.read" is mandatory to read user name. it is weird
 });
 

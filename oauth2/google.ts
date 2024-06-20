@@ -4,7 +4,7 @@ import { loadSync, z } from "../deps.ts";
 loadSync({ export: true });
 
 export const google_oauth_config = createGoogleOAuthConfig({
-  redirectUri: "http://localhost:8000/callback_google",
+  redirectUri: "http://localhost:8000/callback-google",
   scope: "https://www.googleapis.com/auth/userinfo.profile"
 });
 

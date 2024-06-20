@@ -1,1 +1,0 @@
-// rip facebook . before test it you need pass 100500 checks and confirm your business and pass reviews. for just use signin signout ... wtf naziberg

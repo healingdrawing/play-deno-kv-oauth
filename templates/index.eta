@@ -9,8 +9,8 @@
     <h1>Hono + Deno KV OAuth</h1>
   </header>
   <main>
-    <a href="/signin_google">Login using google</a>
-    <a href="/signin_x">Login using X</a>
+    <a href="/signin-google">Login using google</a>
+    <a href="/signin-x">Login using X</a>
   </main>
 </body>
 </html>
