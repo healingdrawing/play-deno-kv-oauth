@@ -5,30 +5,23 @@ import { Tokens , kvdb , Context , getSessionId , eta,
 } from "../deps.ts";
 
 export  const home_handler = async (c:Context) => {
-  const session_id = await getSessionId(c.req.raw)
-  .then(entry => entry as string | undefined);
+  const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
   console.log(session_id);
 
   const is_signed_in = session_id !== undefined; //has session id cookie
   console.log({is_signed_in})
   
-  if (!is_signed_in) {
-    return c.html(
-      await eta.renderAsync("index", {})
-    )
-  }
+  if (!is_signed_in) { return c.html( await eta.renderAsync("index", {}) ) }
 
-  const provider = await kvdb.get(["oauth2-providers",session_id])
-  .then(entry => entry.value as string | undefined);
-    console.log("provider", provider); // google or x. wth, it looks dirty
+  const provider = await kvdb.get(["oauth2-providers",session_id]).then(entry => entry.value as string | undefined);
+  console.log("provider", provider); // google or x. wth, it looks dirty
 
   let data:Google_Profile_Data | X_Profile_Data | string | undefined;
 
   if (typeof session_id !== 'string'){
     console.log("some crap with session_id . type of", typeof session_id);
   } else {
-    const access_token = await kvdb.get<Tokens>(["tokens", session_id])
-    .then(entry => entry.value as Tokens | undefined);
+    const access_token = await kvdb.get<Tokens>(["tokens", session_id]).then(entry => entry.value as Tokens | undefined);
     console.log("access_token", access_token);
 
     if (provider === "google"){
