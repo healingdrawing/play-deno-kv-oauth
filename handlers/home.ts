@@ -32,9 +32,9 @@ export  const home_handler = async (c:Context) => {
     console.log("access_token", access_token);
 
     if (provider === "google"){
-      data = await fetch_google_profile_data(access_token?.accessToken!)
+      data = await fetch_google_profile_data(access_token?.accessToken!);
     } else if (provider === "x") {
-      data = await fetch_x_profile_data(access_token?.accessToken!)
+      data = await fetch_x_profile_data(access_token?.accessToken!);
     } else {
       data = "wrong 'provider' value: " + provider; // should not happen
     }

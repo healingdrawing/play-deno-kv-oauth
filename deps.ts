@@ -2,6 +2,8 @@ export { kvdb } from "./main.ts"
 
 export { loadSync } from "https://deno.land/std@0.194.0/dotenv/mod.ts";
 
+export { z } from "https://deno.land/x/zod@v3.23.8/mod.ts";
+
 export {
   google_oauth_config,
   fetch_google_profile_data,
