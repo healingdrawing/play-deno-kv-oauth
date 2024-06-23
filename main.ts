@@ -14,7 +14,7 @@ export const eta = new Eta({ views: join(Deno.cwd(), "templates") });
 // console.log(db_path);
 export const kvdb = await Deno.openKv("db");
 
-const app = new Hono()
+export const app = new Hono()
 
 app.get('/', home_handler);
 
