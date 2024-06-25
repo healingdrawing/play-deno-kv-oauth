@@ -8,8 +8,8 @@ export const eta = new Eta({ views: join(Deno.cwd(), "templates") });
 // console.log(db_path);
 export const kvdb = await Deno.openKv("db");
 
-import { Hono } from "https://deno.land/x/hono@v4.3.11/mod.ts";
-export const app = new Hono()
+export { Hono } from "https://deno.land/x/hono@v4.3.11/mod.ts";
+
 
 export { loadSync } from "https://deno.land/std@0.194.0/dotenv/mod.ts";
 
@@ -38,7 +38,8 @@ export {
 
 export { type Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts";
 
-export { home_handler } from "./handlers/home.ts";
+// import home from "./ends/home/home.ts";
+export { default as home } from "./ends/home/home.ts"
 
 export { google_signin_handler } from "./oauth2/google_signin.ts";
 export { x_signin_handler } from "./oauth2/x_signin.ts";

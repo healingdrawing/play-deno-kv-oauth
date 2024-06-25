@@ -1,11 +1,13 @@
-import { app, home_handler, signout_handler,
+import { Hono, home, signout_handler,
   google_signin_handler, google_callback_handler
 } from "./deps.ts";
 
 
 import { x_signin_handler, x_callback_handler } from "./deps.ts";
 
-app.get('/', home_handler);
+const app = new Hono()
+
+app.route('/', home);
 
 app.get("/signin-google", google_signin_handler);
 app.get("/signin-x", x_signin_handler);
