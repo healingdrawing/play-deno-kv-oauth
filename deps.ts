@@ -40,6 +40,7 @@ export { type Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts";
 
 // import home from "./ends/home/home.ts";
 export { default as home } from "./ends/home/home.ts"
+export { default as signout } from "./oauth2/all_signout.ts"
 
 export { google_signin_handler } from "./oauth2/google_signin.ts";
 export { x_signin_handler } from "./oauth2/x_signin.ts";
@@ -47,4 +48,3 @@ export { x_signin_handler } from "./oauth2/x_signin.ts";
 export { google_callback_handler } from "./oauth2/google_callback.ts";
 export { x_callback_handler } from "./oauth2/x_callback.ts";
 
-export { signout_handler } from "./oauth2/all_signout.ts"
