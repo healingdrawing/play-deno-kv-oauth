@@ -1,7 +1,7 @@
 import {
   Hono, home, signout,
-  google_signin_handler, google_callback_handler,
-  x_signin_handler, x_callback_handler 
+  signin_google, callback_google,
+  signin_x, callback_x 
 } from "./deps.ts";
 
 
@@ -10,11 +10,11 @@ const app = new Hono()
 app.route('/', home);
 app.route("/signout", signout);
 
-app.get("/signin-google", google_signin_handler);
-app.get("/signin-x", x_signin_handler);
+app.route("/signin-google", signin_google);
+app.route("/signin-x", signin_x);
 
-app.get("/callback-google", google_callback_handler);
-app.get("/callback-x", x_callback_handler);
+app.route("/callback-google", callback_google);
+app.route("/callback-x", callback_x);
 
 
 Deno.serve(app.fetch)

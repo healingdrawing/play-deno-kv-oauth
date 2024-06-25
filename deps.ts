@@ -19,13 +19,13 @@ export {
   google_oauth_config,
   fetch_google_profile_data,
   type Google_Profile_Data,
-} from "./oauth2/google.ts";
+} from "./oauth2/utils_google.ts";
 
 export {
   x_oauth_config,
   fetch_x_profile_data,
   type X_Profile_Data,
-} from "./oauth2/x.ts"
+} from "./oauth2/utils_x.ts"
 
 export { type Context } from "https://deno.land/x/hono@v4.3.11/mod.ts";
 
@@ -38,13 +38,11 @@ export {
 
 export { type Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts";
 
-// import home from "./ends/home/home.ts";
 export { default as home } from "./ends/home/home.ts"
-export { default as signout } from "./oauth2/all_signout.ts"
 
-export { google_signin_handler } from "./oauth2/google_signin.ts";
-export { x_signin_handler } from "./oauth2/x_signin.ts";
+export { default as signout } from "./oauth2/signout.ts"
+export { default as signin_google } from "./oauth2/signin_google.ts";
+export { default as signin_x } from "./oauth2/signin_x.ts";
 
-export { google_callback_handler } from "./oauth2/google_callback.ts";
-export { x_callback_handler } from "./oauth2/x_callback.ts";
-
+export { default as callback_google } from "./oauth2/callback_google.ts";
+export { default as callback_x } from "./oauth2/callback_x.ts";
