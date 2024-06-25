@@ -1,4 +1,15 @@
-export { kvdb } from "./main.ts"
+export { join } from "https://deno.land/std@0.224.0/path/mod.ts";
+
+import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
+import { Eta } from "https://deno.land/x/eta@v3.4.0/src/index.ts";
+export const eta = new Eta({ views: join(Deno.cwd(), "templates") });
+
+// const db_path = join(Deno.cwd(), "kvdb");
+// console.log(db_path);
+export const kvdb = await Deno.openKv("db");
+
+import { Hono } from "https://deno.land/x/hono@v4.3.11/mod.ts";
+export const app = new Hono()
 
 export { loadSync } from "https://deno.land/std@0.194.0/dotenv/mod.ts";
 
@@ -27,14 +38,12 @@ export {
 
 export { type Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts";
 
-export { eta } from "./main.ts";
-
 export { home_handler } from "./handlers/home.ts";
 
-export { google_signin_handler } from "./handlers/google_signin.ts";
-export { x_signin_handler } from "./handlers/x_signin.ts";
+export { google_signin_handler } from "./oauth2/google_signin.ts";
+export { x_signin_handler } from "./oauth2/x_signin.ts";
 
-export { google_callback_handler } from "./handlers/google_callback.ts";
-export { x_callback_handler } from "./handlers/x_callback.ts";
+export { google_callback_handler } from "./oauth2/google_callback.ts";
+export { x_callback_handler } from "./oauth2/x_callback.ts";
 
-export { google_signout_handler } from "./handlers/google_signout.ts"
+export { signout_handler } from "./oauth2/all_signout.ts"
