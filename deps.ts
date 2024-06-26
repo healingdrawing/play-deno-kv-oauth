@@ -40,6 +40,9 @@ export { type Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts";
 
 export { default as home } from "./ends/home/home.ts"
 
+export { type Data, data_placeholder, data_schema } from "./ends/data/utils.ts"
+export { default as data } from "./ends/data/data.ts"
+
 export { default as signout } from "./oauth2/signout.ts"
 export { default as signin_google } from "./oauth2/signin_google.ts";
 export { default as signin_x } from "./oauth2/signin_x.ts";
