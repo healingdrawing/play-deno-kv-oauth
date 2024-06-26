@@ -22,21 +22,17 @@ app.get("/",
 
     let data:Google_Profile_Data | X_Profile_Data | string | undefined
 
-    if (typeof session_id !== 'string'){
-      console.log("some crap with session_id . type of", typeof session_id)
-    } else {
-      const access_token = await kvdb.get<Tokens>(["tokens", session_id]).then(entry => entry.value as Tokens | undefined)
-      console.log("access_token", access_token)
+    const access_token = await kvdb.get<Tokens>(["tokens", session_id]).then(entry => entry.value as Tokens | undefined)
+    console.log("access_token", access_token)
 
-      if (provider === "google"){
-        data = await fetch_google_profile_data(access_token?.accessToken!)
-      } else if (provider === "x") {
-        data = await fetch_x_profile_data(access_token?.accessToken!)
-      } else {
-        data = "wrong 'provider' value: " + provider; // should not happen
-      }
-      console.log("final data", data)
+    if (provider === "google"){
+      data = await fetch_google_profile_data(access_token?.accessToken!)
+    } else if (provider === "x") {
+      data = await fetch_x_profile_data(access_token?.accessToken!)
+    } else {
+      data = "wrong 'provider' value: " + provider; // should not happen
     }
+    console.log("final data", data)
     
     return c.html(
       await eta.renderAsync("profile", data? data : {})
