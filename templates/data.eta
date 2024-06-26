@@ -10,6 +10,7 @@
   </header>
   <main>
     <a href="/">Home</a>
+    
     <h2>Space ship name:</h2>
     <p><%= it.space_ship_name %></p>
     <h2>Space ship number:</h2>
@@ -20,8 +21,9 @@
     <h2>Captain license number:</h2>
     <p><%= it.captain_licence_number %></p>
     <h2>Captain name:</h2>
-    <p><%= it.captain.name %></p>
+    <p><%= it.captain_name %></p>
 
+    <a href="/edit">Edit</a>
   </main>
 </body>
 </html>
