@@ -10,6 +10,7 @@
   </header>
   <main>
     <a href="/signout">Logout</a>
+    <a href="/data">Data for the event</a>
   </main>
 </body>
 </html>

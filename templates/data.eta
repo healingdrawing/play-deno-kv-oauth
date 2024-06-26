@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Deno Form Example</title>
+</head>
+<body>
+  <header>
+      <h1>Data for the event</h1>
+  </header>
+  <main>
+    <a href="/">Home</a>
+    <h2>Space ship name:</h2>
+    <p><%= it.space_ship_name %></p>
+    <h2>Space ship number:</h2>
+    <p><%= it.space_ship_number %></p>
+    
+    <h2>Crew name:</h2>
+    <p><%= it.crew_name %></p>
+    <h2>Captain license number:</h2>
+    <p><%= it.captain_licence_number %></p>
+    <h2>Captain name:</h2>
+    <p><%= it.captain.name %></p>
+
+  </main>
+</body>
+</html>
