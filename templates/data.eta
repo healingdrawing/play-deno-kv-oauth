@@ -23,7 +23,7 @@
     <h2>Captain name:</h2>
     <p><%= it.captain_name %></p>
 
-    <a href="/edit">Edit</a>
+    <a href="/data/edit">Edit</a>
   </main>
 </body>
 </html>

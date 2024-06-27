@@ -41,4 +41,14 @@ app.post("/",
   }
 )
 
+app.get("/edit",
+  async (c) => {
+    console.log("we are inside post redirect")
+    const data = data_placeholder
+    return c.html(
+      await eta.renderAsync("edit", data? data : {})
+    );
+  }
+)
+
 export default app
