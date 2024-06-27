@@ -8,6 +8,7 @@ const app = new Hono()
 
 app.get("/",
   async (c) => {
+    console.log("we are inside get")
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
     console.log(session_id)
 
@@ -30,6 +31,13 @@ app.get("/",
     return c.html(
       await eta.renderAsync("data", data? data : {})
     );
+  }
+)
+
+app.post("/",
+  async (c) => {
+    console.log("we are inside post redirect")
+    return c.redirect("/")
   }
 )
 
