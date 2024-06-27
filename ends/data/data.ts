@@ -44,7 +44,7 @@ app.post("/",
 app.get("/edit",
   async (c) => {
     console.log("we are inside post redirect")
-    const data = data_placeholder
+    const data = data_placeholder //todo refactor to implement kvdb read
     return c.html(
       await eta.renderAsync("edit", data? data : {})
     );
