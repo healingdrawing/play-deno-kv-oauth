@@ -13,16 +13,16 @@
     
     <form action="/data" method="post">
     <h2>Space ship name:</h2>
-    <input type="text" id="space-ship-name" name="space-ship-name" value="<%= it.space_ship_name %>" required>
+    <input type="text" id="space_ship_name" name="space_ship_name" value="<%= it.space_ship_name %>" required>
     <h2>Space ship number:</h2>
-    <input type="text" id="space-ship-number" name="space-ship-number" value="<%= it.space_ship_number %>" required>
+    <input type="text" id="space_ship_number" name="space_ship_number" value="<%= it.space_ship_number %>" required>
     
     <h2>Crew name:</h2>
-    <input type="text" id="crew-name" name="crew-name" value="<%= it.crew_name %>" required>
+    <input type="text" id="crew_name" name="crew_name" value="<%= it.crew_name %>" required>
     <h2>Captain license number:</h2>
-    <input type="text" id="captain-licence-number" name="captain-licence-number" value="<%= it.captain_licence_number %>" required>
+    <input type="text" id="captain_licence_number" name="captain_licence_number" value="<%= it.captain_licence_number %>" required>
     <h2>Captain name:</h2>
-    <input type="text" id="captain-name" name="captain-name" value="<%= it.captain_name %>" required>
+    <input type="text" id="captain_name" name="captain_name" value="<%= it.captain_name %>" required>
 
     <input type="submit" value="save">
     </form>
