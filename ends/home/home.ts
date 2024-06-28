@@ -10,7 +10,7 @@ const app = new Hono()
 app.get("/",
   async (c) => {
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
-    console.log(session_id)
+    console.log("session id ",session_id)
 
     const is_signed_in = session_id !== undefined; //has session id cookie
     console.log({is_signed_in})

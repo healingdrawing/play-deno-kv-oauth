@@ -23,6 +23,7 @@ app.get("/",
     const data_json = await kvdb.get(["data", session_id]).then(entry => entry.value) // as string | undefined)
     let data:Data = data_placeholder
     try {
+      console.log(data_json) //bug it is null in some reasons after restart the server
       data = await data_schema.parseAsync(data_json)
     } catch (e) {
       console.log("ERROR: parse data from kvdb | ", e, " | session_id ", session_id);
@@ -47,7 +48,7 @@ app.post("/",
 
     let data:Data
     try{
-      data = await data_schema.parseAsync(body) //bug FAIL place. it was key-name vs key_name
+      data = await data_schema.parseAsync(body)
       console.log("data parsed inside post", data)
     } catch (e) {
       console.log("ERROR: parse data from body | ", e, " | session_id ", session_id);
