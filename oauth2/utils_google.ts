@@ -36,8 +36,24 @@ const google_fail_case:Google_Profile_Data = {
 
 // consider to return specific type/interface etc later
 export async function fetch_google_profile_data(access_token: string): Promise<Google_Profile_Data> {
+  // todo
+  /*
+  - inject session_id into function incoming parameters
+  - check if there is record of fetched profile data for session_id
+  - if record of profile data for session_id is present then use data from kvdb
+  - if NO record, then
+  - - fetch new profile data from google api
+  - - check fetched profile data
+  - - record profile data in kvdb with key equal to ["profile", session_id]
+  - - get the user profile id from fetched data
+  - - remove all profile records for user profile id, to prevent garbage in database
+  - - finally every new login with new session_id, must remove data from previous fetch
+  - return new data
+  */
+
   const url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token;
   const response = await fetch(url, { method: "GET" });
+
   try {
     const data = await response.json();  
     console.log("data inside fetch google: ", data);
