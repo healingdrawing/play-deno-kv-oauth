@@ -22,13 +22,13 @@ app.get("/",
 
     let data:Google_Profile_Data | X_Profile_Data | string | undefined
 
-    const access_token = await kvdb.get<Tokens>(["tokens", session_id]).then(entry => entry.value as Tokens | undefined)
-    console.log("access_token", access_token)
+    const tokens = await kvdb.get<Tokens>(["tokens", session_id]).then(entry => entry.value as Tokens | undefined)
+    console.log("access_token", tokens)
 
     if (provider === "google"){
-      data = await fetch_google_profile_data(access_token?.accessToken!)
+      data = await fetch_google_profile_data(tokens?.accessToken!)
     } else if (provider === "x") {
-      data = await fetch_x_profile_data(access_token?.accessToken!)
+      data = await fetch_x_profile_data(tokens?.accessToken!)
     } else {
       data = "wrong 'provider' value: " + provider; // should not happen
     }
