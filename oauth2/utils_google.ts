@@ -51,6 +51,8 @@ export async function fetch_google_profile_data(access_token: string, session_id
   - return new data
   */
 
+  const profile = await kvdb.get<Google_Profile_Data>(["profile", session_id]).then(d => d.value)
+
   const url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token;
   const response = await fetch(url, { method: "GET" });
 
