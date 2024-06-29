@@ -10,32 +10,37 @@ const app = new Hono()
 app.get("/",
   async (c) => {
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
-    console.log("session id ",session_id)
+    if (session_id === undefined || session_id === "") {
+      console.log("ERROR: session_id ", session_id)
+      return c.html( await eta.renderAsync("index", {}) )
+    }
 
-    const is_signed_in = session_id !== undefined; //has session id cookie
-    console.log({is_signed_in})
-    
-    if (!is_signed_in) { return c.html( await eta.renderAsync("index", {}) ) }
-
-    const provider = await kvdb.get(["oauth2-providers",session_id]).then(entry => entry.value as string | undefined)
-    console.log("provider", provider) // google or x. wth, it looks dirty
-
-    let data:Google_Profile_Data | X_Profile_Data | string | undefined
+    const provider = await kvdb.get(["oauth2-providers", session_id]).then(entry => entry.value as string | undefined)
+    if (provider === undefined || !["google","x"].includes(provider)){
+      console.log("ERROR: provider ", provider)
+      return c.html( await eta.renderAsync("error", {}) )
+    }
 
     const tokens = await kvdb.get<Tokens>(["tokens", session_id]).then(entry => entry.value as Tokens | undefined)
-    console.log("access_token", tokens)
+    if (tokens === undefined){
+      console.log("ERROR: tokens ", tokens)
+      return c.html( await eta.renderAsync("error", {}) )
+    }
+    
+    let data:Google_Profile_Data | X_Profile_Data | undefined
 
     if (provider === "google"){
-      data = await fetch_google_profile_data(tokens?.accessToken!)
+      data = await fetch_google_profile_data(tokens.accessToken, session_id)
     } else if (provider === "x") {
-      data = await fetch_x_profile_data(tokens?.accessToken!)
-    } else {
-      data = "wrong 'provider' value: " + provider; // should not happen
+      data = await fetch_x_profile_data(tokens.accessToken)
     }
-    console.log("final data", data)
+    if (data === undefined) {
+      console.log("ERROR: fetch data from", provider)
+      return c.html( await eta.renderAsync("error", {}) )
+    }
     
     return c.html(
-      await eta.renderAsync("profile", data? data : {})
+      await eta.renderAsync("profile", data)
     );
   }
 )

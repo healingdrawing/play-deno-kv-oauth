@@ -1,6 +1,6 @@
 import { createGoogleOAuthConfig } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 
-import { loadSync, z } from "../deps.ts";
+import { loadSync, z, kvdb } from "../deps.ts";
 loadSync({ export: true });
 
 export const google_oauth_config = createGoogleOAuthConfig({
@@ -35,10 +35,10 @@ const google_fail_case:Google_Profile_Data = {
 }
 
 // consider to return specific type/interface etc later
-export async function fetch_google_profile_data(access_token: string): Promise<Google_Profile_Data> {
+export async function fetch_google_profile_data(access_token: string, session_id: string): Promise<Google_Profile_Data> {
   // todo
   /*
-  - inject session_id into function incoming parameters
+  + inject session_id into function incoming parameters
   - check if there is record of fetched profile data for session_id
   - if record of profile data for session_id is present then use data from kvdb
   - if NO record, then
