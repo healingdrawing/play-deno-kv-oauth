@@ -34,49 +34,26 @@ const google_fail_case:Google_Profile_Data = {
   picture: "N/A",
 }
 
-// consider to return specific type/interface etc later
+/** fetch data from kvdb or from google api + clean old.
+ * So, every new device session initiates clean the old data.
+ * Refresh works from kvdb*/
 export async function fetch_google_profile_data(access_token: string, session_id: string): Promise<Google_Profile_Data> {
-  // todo
-  /*
-  + inject session_id into function incoming parameters
-  + check if there is record of fetched profile data for session_id
-  + if record of profile data for session_id is present then use data from kvdb
-  - if NO record, then
-  + - fetch new profile data from google api
-  + - check fetched profile data
-  + - record profile data in kvdb with key equal to ["profile", session_id]
-  - - get the user profile id from fetched data
-  - - remove all profile records for user profile id, to prevent garbage in database
-  - - finally every new login with new session_id, must remove data from previous fetch
-  - return new data
-  */
-
-  const profile = await kvdb.get<Google_Profile_Data>(["profile", session_id]).then(d => d.value)
+  
+  const profile = await kvdb.get<Google_Profile_Data>(["profile", "google", session_id]).then(d => d.value)
   if (profile !== null){ return profile }
-
-  console.log("profile is ", profile, " fetch new data")
 
   const url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token
   
   try {
     const response = await fetch(url, { method: "GET" })
     const data_json = await response.json()
-    console.log("data_json inside fetch google: ", data_json)
     const data = await google_schema.parseAsync(data_json)
 
+    const profiles = kvdb.list<Google_Profile_Data>({prefix: ["profile", "google"]})
+    for await (const x of profiles ){ if (x.value.id === data.id) kvdb.delete(x.key) }
     
-    const profiles = kvdb.list<Google_Profile_Data>({prefix: ["profile"]})
-    for await (const x of profiles ){
-      if (x.value.id === data.id){
-        console.log("deleted key", x.key)
-        console.log(x.value)
-        console.log("id ", data.id)
-        kvdb.delete(x.key)
-      }
-    }
-    
-    console.log("new session_id", session_id)
-    await kvdb.set(["profile", session_id], data)
+    await kvdb.set(["profile", "google", session_id], data)
+
     return data
   } catch (e) {
     console.log("ERROR: fetch_google_profile_data | ", e)

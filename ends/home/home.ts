@@ -32,7 +32,7 @@ app.get("/",
     if (provider === "google"){
       data = await fetch_google_profile_data(tokens.accessToken, session_id)
     } else if (provider === "x") {
-      data = await fetch_x_profile_data(tokens.accessToken)
+      data = await fetch_x_profile_data(tokens.accessToken, session_id)
     }
     if (data === undefined) { // at the moment it is impossible , because placeholder used inside fetch
       console.log("ERROR: fetch data from", provider)
