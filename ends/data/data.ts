@@ -11,15 +11,17 @@ app.get("/",
     console.log("we are inside get")
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
     console.log(session_id)
+    if (session_id === undefined || session_id === "") {
+      console.log("ERROR: session_id ", session_id)
+      return c.html( await eta.renderAsync("index", {}) )
+    }
 
-    const is_signed_in = session_id !== undefined; //has session id cookie
-    console.log({is_signed_in})
-    
-    if (!is_signed_in) { return c.html( await eta.renderAsync("index", {}) ) }
-
-    const provider = await kvdb.get(["oauth2-providers",session_id]).then(entry => entry.value as string | undefined)
-    console.log("provider", provider) // google or x. wth, it looks dirty
-
+    const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)
+    if (provider === null || !["google","x"].includes(provider)){
+      console.log("ERROR: provider ", provider)
+      return c.html( await eta.renderAsync("error", {}) )
+    }
+    // todo not completed, first implements utils.ts for data.ts
     const data_json = await kvdb.get(["data", session_id]).then(entry => entry.value) // as string | undefined)
     let data:Data = data_placeholder
     try {
