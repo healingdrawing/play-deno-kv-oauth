@@ -1,7 +1,7 @@
 
-import { Hono, Tokens, kvdb, getSessionId, eta,
-  Google_Profile_Data, fetch_google_profile_data,
-  X_Profile_Data, fetch_x_profile_data,
+import {
+  Hono, Tokens, kvdb, getSessionId, eta,
+  providers, fetch_profile_data,
 } from "../../deps.ts"
 
 /** at the moment for both google and x */
@@ -16,26 +16,20 @@ app.get("/",
     }
 
     const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)
-    if (provider === null || !["google","x"].includes(provider)){
-      console.log("ERROR: provider ", provider)
+    if (provider === null || !providers.includes(provider)){
+      console.log("ERROR: get provider ", provider)
       return c.html( await eta.renderAsync("error", {}) )
     }
 
     const tokens = await kvdb.get<Tokens>(["tokens", session_id]).then(entry => entry.value)
     if (tokens === null){
-      console.log("ERROR: tokens ", tokens)
+      console.log("ERROR: get tokens ", tokens)
       return c.html( await eta.renderAsync("error", {}) )
     }
     
-    let data:Google_Profile_Data | X_Profile_Data | undefined
-
-    if (provider === "google"){
-      data = await fetch_google_profile_data(tokens.accessToken, session_id)
-    } else if (provider === "x") {
-      data = await fetch_x_profile_data(tokens.accessToken, session_id)
-    }
-    if (data === undefined) { // at the moment it is impossible , because placeholder used inside fetch
-      console.log("ERROR: fetch data from", provider)
+    const data = fetch_profile_data(tokens.accessToken, session_id, provider)
+    if (data === null) {
+      console.log("ERROR: fetch profile data from", provider)
       return c.html( await eta.renderAsync("error", {}) )
     }
     

@@ -30,18 +30,12 @@ const x_schema = z.object(
   }
 )
 
-const x_fail_case: X_Profile_Data = {  
-    id: "N/A",
-    name: "N/A",
-    username: "N/A",  
-}
-
 /** fetch data from kvdb or from x/twitter api + clean old.
  * So, every new device session initiates clean the old data.
  * Refresh works from kvdb*/
-export async function fetch_x_profile_data(access_token: string, session_id: string): Promise<X_Profile_Data> {
+export async function fetch_x_profile_data(access_token: string, session_id: string): Promise<X_Profile_Data | undefined> {
 
-  const profile = await kvdb.get<X_Profile_Data>(["profile", "x", session_id]).then(d => d.value)
+  let profile = await kvdb.get<X_Profile_Data>(["profile", "x", session_id]).then(d => d.value)
   if (profile !== null){ return profile }
 
   const url = "https://api.twitter.com/2/users/me"
@@ -58,16 +52,16 @@ export async function fetch_x_profile_data(access_token: string, session_id: str
     )
     const data_json = await response.json()
     const x_data_container:X_Profile_Container = await x_schema.parseAsync(data_json)
-    const data = x_data_container.data
+    profile = x_data_container.data
 
     const profiles = kvdb.list<X_Profile_Data>({prefix: ["profile", "x"]})
-    for await (const x of profiles){ if (x.value.id === data.id) kvdb.delete(x.key) }
+    for await (const x of profiles){ if (x.value.id === profile.id) kvdb.delete(x.key) }
 
-    await kvdb.set(["profile", "x", session_id], data)
+    await kvdb.set(["profile", "x", session_id], profile)
 
-    return data
+    return profile
   } catch (e) {
     console.log("ERROR: fetch_x_profile_data | ", e)
   }
-  return x_fail_case;
+  return undefined;
 }

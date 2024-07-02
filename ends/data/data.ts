@@ -1,6 +1,7 @@
 
 import { Hono, kvdb, getSessionId, eta,
-  Data, data_placeholder, data_schema
+  Data, data_placeholder, data_schema,
+  providers
 } from "../../deps.ts"
 
 /** at the moment for both google and x */
@@ -17,7 +18,7 @@ app.get("/",
     }
 
     const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)
-    if (provider === null || !["google","x"].includes(provider)){
+    if (provider === null || !providers.includes(provider)){
       console.log("ERROR: provider ", provider)
       return c.html( await eta.renderAsync("error", {}) )
     }
