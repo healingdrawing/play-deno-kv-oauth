@@ -1,4 +1,4 @@
-import { Google_Profile_Data, kvdb, providers, z } from "../../deps.ts"
+import { Google_Profile_Data, X_Profile_Data, kvdb, providers, z } from "../../deps.ts"
 
 export interface Data {
   space_ship_name: string;
@@ -27,18 +27,26 @@ export const data_placeholder:Data = {
 }
 
 export async function get_data(provider:string, session_id:string):Promise<Data | null>{
-  let data = null
+  let data:Data | null = null
   if (providers.includes(provider)){
-    const profile = await kvdb.get<Google_Profile_Data>(["profile", provider, session_id]).then(d => d.value)
+    const profile = await kvdb.get<Google_Profile_Data | X_Profile_Data>(["profile", provider, session_id]).then(d => d.value)
     if (profile === null){
       console.log(`ERROR: get ${provider} profile from kvdb`)
     } else {
-      data = await kvdb.get<Data>(["data", profile.id]).then(d => d.value)
+      const data_raw = await kvdb.get<Data>(["data", profile.id]).then(d => d.value)
       if (data === null) {
         console.log(`ERROR: get data from kvdb using ${provider} profile id`)
+      }
+      try {
+        console.log(data_raw)
+        data = await data_schema.parseAsync(data_raw)
+      } catch (e) {
+        console.log("ERROR: parse data from kvdb | ", e, " | profile id ", profile.id);
       }
     }
   }
   //todo raw, not tested at all
   return data
 }
+
+export async function set_data(provider: string, session_id: string, data: Data){}
