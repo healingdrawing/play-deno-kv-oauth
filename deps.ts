@@ -13,6 +13,7 @@ export const eta = new Eta({ views: join(Deno.cwd(), "templates") })
 export { Hono } from "https://deno.land/x/hono@v4.3.11/mod.ts"
 // export { type Context } from "https://deno.land/x/hono@v4.3.11/mod.ts" //todo remove after check
 export { type RedirectStatusCode } from "https://deno.land/x/hono@v4.3.11/utils/http-status.ts"
+export { csrf } from "https://deno.land/x/hono@v4.3.11/middleware/csrf/index.ts";
 
 export { loadSync } from "https://deno.land/std@0.194.0/dotenv/mod.ts"
 

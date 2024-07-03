@@ -1,5 +1,5 @@
 import {
-  Hono, home, data,
+  Hono, csrf, home, data,
   signout,
   signin_google, callback_google,
   signin_x, callback_x, 
@@ -8,6 +8,9 @@ import {
 
 
 const app = new Hono()
+app.use(csrf({
+  origin: ['localhost', 'development.myapp.example.com'],
+}))
 
 app.route('/', home)
 app.route("/data", data)
