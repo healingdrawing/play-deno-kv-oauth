@@ -11,7 +11,7 @@ const app = new Hono()
 
 app.get("/",
   async (c) => {
-    console.log("we are inside get")
+    console.log("we are inside get /")
     
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
     console.log(session_id) //todo remove
@@ -26,10 +26,10 @@ app.get("/",
       return c.html( await eta.renderAsync("error", {}) )
     }
 
-    const data = await get_data(provider, session_id)
+    let data = await get_data(provider, session_id)
     if (data === null){
-      console.log("ERROR: data ", data)
-      return c.html( await eta.renderAsync("error", {}) )
+      console.log("ERROR: data ", data, ". Use placeholder instead!")
+      data = data_placeholder
     }
     
     return c.html(
@@ -82,10 +82,10 @@ app.get("/edit",
       return c.html( await eta.renderAsync("error", {}) )
     }
 
-    const data = await get_data(provider, session_id)
+    let data = await get_data(provider, session_id)
     if (data === null){
-      console.log("ERROR: data ", data)
-      return c.html( await eta.renderAsync("error", {}) )
+      console.log("ERROR: data ", data, ". Use placeholder instead!")
+      data = data_placeholder
     }
 
     return c.html(
