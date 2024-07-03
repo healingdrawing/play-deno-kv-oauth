@@ -1,3 +1,4 @@
+import { BodyData } from "https://deno.land/x/hono@v4.3.11/utils/body.ts";
 import { Google_Profile_Data, X_Profile_Data, kvdb, providers, z } from "../../deps.ts"
 
 export interface Data {
@@ -26,27 +27,62 @@ export const data_placeholder:Data = {
   captain_name: "N/A",
 }
 
-export async function get_data(provider:string, session_id:string):Promise<Data | null>{
+export async function get_data(
+  provider:string,
+  session_id:string
+):Promise<Data | null>{
   let data:Data | null = null
   if (providers.includes(provider)){
+    
     const profile = await kvdb.get<Google_Profile_Data | X_Profile_Data>(["profile", provider, session_id]).then(d => d.value)
     if (profile === null){
       console.log(`ERROR: get ${provider} profile from kvdb`)
-    } else {
-      const data_raw = await kvdb.get<Data>(["data", profile.id]).then(d => d.value)
-      if (data === null) {
-        console.log(`ERROR: get data from kvdb using ${provider} profile id`)
-      }
-      try {
-        console.log(data_raw)
-        data = await data_schema.parseAsync(data_raw)
-      } catch (e) {
-        console.log("ERROR: parse data from kvdb | ", e, " | profile id ", profile.id);
-      }
+      return null
     }
+
+    const data_raw = await kvdb.get<Data>(["data", profile.id]).then(d => d.value)
+    if (data_raw === null) {
+      console.log(`ERROR: get data from kvdb using ${provider} profile id`)
+      return null
+    }
+
+    try {
+      console.log(data_raw)
+      data = await data_schema.parseAsync(data_raw)
+    } catch (e) {
+      console.log("ERROR: parse data from kvdb | ", e, " | profile id ", profile.id);
+      return null
+    }
+    
   }
   //todo raw, not tested at all
   return data
 }
 
-export async function set_data(provider: string, session_id: string, data: Data){}
+export async function set_data(
+  provider: string,
+  session_id: string,
+  body: BodyData
+):Promise<boolean>{
+  if (providers.includes(provider)){
+    
+    const profile = await kvdb.get<Google_Profile_Data | X_Profile_Data>(["profile", provider, session_id]).then(d => d.value)
+    if (profile === null){
+      console.log(`ERROR: set_data get ${provider} profile from kvdb`)
+      return false
+    }
+
+    let data:Data
+    try{
+      data = await data_schema.parseAsync(body)
+      console.log("data parsed inside post", data) //todo remove
+    } catch (e) {
+      console.log("ERROR: parse data from body | ", e, " | session_id ", session_id);
+      return false
+    }
+
+    await kvdb.set(["data", profile.id], data)
+  }
+  
+  return true
+}

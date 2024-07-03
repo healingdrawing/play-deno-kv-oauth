@@ -1,7 +1,9 @@
 
 import { Hono, kvdb, getSessionId, eta,
   Data, data_placeholder, data_schema,
-  providers
+  providers,
+  set_data,
+  get_data
 } from "../../deps.ts"
 
 /** at the moment for both google and x */
@@ -22,18 +24,15 @@ app.get("/",
       console.log("ERROR: provider ", provider)
       return c.html( await eta.renderAsync("error", {}) )
     }
-    // todo not completed, first implements utils.ts for data.ts
-    const data_json = await kvdb.get(["data", session_id]).then(entry => entry.value) // as string | undefined)
-    let data:Data = data_placeholder
-    try {
-      console.log(data_json) //bug it is null in some reasons after restart the server
-      data = await data_schema.parseAsync(data_json)
-    } catch (e) {
-      console.log("ERROR: parse data from kvdb | ", e, " | session_id ", session_id);
+
+    const data = await get_data(provider, session_id)
+    if (data === null){
+      console.log("ERROR: data ", data)
+      return c.html( await eta.renderAsync("error", {}) )
     }
     
     return c.html(
-      await eta.renderAsync("data", data? data : {})
+      await eta.renderAsync("data", data)
     );
   }
 )
@@ -43,22 +42,23 @@ app.post("/",
     console.log("we are inside post redirect")
 
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
-    const is_signed_in = session_id !== undefined; //has session id cookie
-    if (!is_signed_in) { return c.html( await eta.renderAsync("index", {}) ) }
-
-    const body = await c.req.parseBody();
-    console.log("body ", body) // is ok
-
-    let data:Data
-    try{
-      data = await data_schema.parseAsync(body)
-      console.log("data parsed inside post", data)
-    } catch (e) {
-      console.log("ERROR: parse data from body | ", e, " | session_id ", session_id);
-      data = data_placeholder
+    if (session_id === undefined || session_id === "") {
+      console.log("ERROR: session_id ", session_id)
+      return c.html( await eta.renderAsync("index", {}) )
     }
 
-    await kvdb.set(["data", session_id], data)
+    const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)
+    if (provider === null || !providers.includes(provider)){
+      console.log("ERROR: provider ", provider)
+      return c.html( await eta.renderAsync("error", {}) )
+    }
+
+    const body = await c.req.parseBody()
+    console.log("body ", body) // is ok
+
+    if (await set_data(provider, session_id, body) === false){
+      return c.html( await eta.renderAsync("error", {}) )
+    }
 
     return c.redirect("/data")
   }

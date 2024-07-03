@@ -11,8 +11,16 @@ import { Eta } from "https://deno.land/x/eta@v3.4.0/src/index.ts"
 export const eta = new Eta({ views: join(Deno.cwd(), "templates") })
 
 export { Hono } from "https://deno.land/x/hono@v4.3.11/mod.ts"
+export { type Context } from "https://deno.land/x/hono@v4.3.11/mod.ts" //todo remove after check
+export { type RedirectStatusCode } from "https://deno.land/x/hono@v4.3.11/utils/http-status.ts"
 
 export { loadSync } from "https://deno.land/std@0.194.0/dotenv/mod.ts"
+
+export {
+  getSessionId,
+  handleCallback,
+} from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts"
+export { type Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts"
 
 export { z } from "https://deno.land/x/zod@v3.23.8/mod.ts"
 
@@ -33,20 +41,11 @@ export {
   type Profile_Data,
 } from "./oauth2/utils.ts"
 
-export { type Context } from "https://deno.land/x/hono@v4.3.11/mod.ts"
-
-export { type RedirectStatusCode } from "https://deno.land/x/hono@v4.3.11/utils/http-status.ts"
-
-export {
-  getSessionId,
-  handleCallback,
-} from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts"
-
-export { type Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts"
 
 export { default as home } from "./ends/home/home.ts"
 
 export { type Data, data_placeholder, data_schema } from "./ends/data/utils.ts"
+export { get_data, set_data } from "./ends/data/utils.ts"
 export { default as data } from "./ends/data/data.ts"
 
 export { default as signout } from "./oauth2/signout.ts"
