@@ -1,9 +1,6 @@
 
 import { Hono, kvdb, getSessionId, eta,
-  Data, data_placeholder, data_schema,
-  providers,
-  set_data,
-  get_data
+  data_placeholder, providers, set_data, get_data,
 } from "../../deps.ts"
 
 /** at the moment for both google and x */
