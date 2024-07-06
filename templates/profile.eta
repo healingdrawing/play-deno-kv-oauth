@@ -6,7 +6,7 @@
 </head>
 <body>
   <header>
-      <h1>Welcome, <%= JSON.stringify(it.name) %> 🦖</h1>
+      <h1>Welcome, <%= JSON.stringify(it.info) %> 🦖</h1>
   </header>
   <main>
     <a href="/signout">Logout</a>

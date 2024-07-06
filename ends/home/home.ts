@@ -27,7 +27,7 @@ app.get("/",
       return c.html( await eta.renderAsync("error", {}) )
     }
     
-    const data = fetch_profile_data(tokens.accessToken, session_id, provider)
+    const data = await fetch_profile_data(tokens.accessToken, session_id, provider)
     if (data === null) {
       console.log("ERROR: fetch profile data from", provider)
       return c.html( await eta.renderAsync("error", {}) )
