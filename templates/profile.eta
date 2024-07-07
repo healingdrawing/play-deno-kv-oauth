@@ -6,11 +6,16 @@
 </head>
 <body>
   <header>
-      <h1>Welcome, <%= JSON.stringify(it.info) %> 🦖</h1>
+      <h1>Welcome, <%= JSON.stringify(it.data.info) %> 🦖</h1>
   </header>
   <main>
     <a href="/signout">Logout</a>
+    <br>
     <a href="/data">Data for the event</a>
+    <br>
+    <% if (it.admin) { %>
+    <a href="/admin">Open admin panel</a>
+    <% } %>
   </main>
 </body>
 </html>

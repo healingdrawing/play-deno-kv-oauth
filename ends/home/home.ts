@@ -2,6 +2,7 @@
 import {
   Hono, Tokens, kvdb, getSessionId, eta,
   providers, fetch_profile_data,
+  is_admin,
 } from "../../deps.ts"
 
 /** at the moment for both google and x */
@@ -33,8 +34,10 @@ app.get("/",
       return c.html( await eta.renderAsync("error", {}) )
     }
     
+    if (is_admin(data.id)) console.log("Admin logged in") //todo remove later
+
     return c.html(
-      await eta.renderAsync("profile", data)
+      await eta.renderAsync("profile", {data, admin:is_admin(data.id)})
     );
   }
 )

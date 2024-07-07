@@ -44,6 +44,7 @@ export {
 
 
 export { default as home } from "./ends/home/home.ts"
+export { is_admin } from "./ends/admin/utils.ts"
 
 export { type Data, data_placeholder, data_schema } from "./ends/data/utils.ts"
 export { get_data, set_data } from "./ends/data/utils.ts"
