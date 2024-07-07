@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Deno Form Example</title>
+</head>
+<body>
+  <header>
+      <h1>Welcome, <%= JSON.stringify(it.data.info) %> 🦖</h1>
+      <h2>Your system id is: <%= JSON.stringify(it.data.id) %></h2>
+  </header>
+  <main>
+    <a href="/signout">Logout</a>
+    <br>
+    <a href="/">Home</a>
+    <br>
+    <a href="/export">Export data to file(save database file on your computer)</a>
+    <br>    
+    <a href="/admin">Import data from file(use database file from your computer)</a>    
+  </main>
+</body>
+</html>

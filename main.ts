@@ -1,9 +1,8 @@
 import {
-  Hono, csrf, home, data,
+  Hono, csrf, home, data, admin,
   signout,
   signin_google, callback_google,
-  signin_x, callback_x, 
-  
+  signin_x, callback_x,  
 } from "./deps.ts"
 
 
@@ -15,6 +14,7 @@ app.use(csrf({
 
 app.route('/', home)
 app.route("/data", data)
+app.route("/admin", admin)
 
 app.route("/signout", signout)
 
