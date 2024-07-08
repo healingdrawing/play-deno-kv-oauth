@@ -16,7 +16,17 @@
     <br>
     <a href="/export">Export data to file(save database file on your computer)</a>
     <br>    
-    <a href="/admin">Import data from file(use database file from your computer)</a>    
+    <a href="/admin">Import data from file(use database file from your computer)</a>
+
+    <hr>
+    <% it.records.forEach( (r) => { %>
+      id = <%= r.key[r.key.length-1] %>
+      <br>
+      value = <%= JSON.stringify(r.value) %>
+      <br>
+      versionstamp = <%= r.versionstamp %>
+      <hr>
+    <% }) %>
   </main>
 </body>
 </html>

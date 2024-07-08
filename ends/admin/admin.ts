@@ -2,6 +2,7 @@ import {
   Hono, Tokens, kvdb, getSessionId, eta,
   providers, fetch_profile_data,
   is_admin,
+  get_all_data_records,
 } from "../../deps.ts"
 
 /** at the moment for both google and x */
@@ -41,8 +42,10 @@ app.get("/",
       console.log("Admin logged in") //todo remove later
     }
     
+    const records = await get_all_data_records()
+
     return c.html(
-      await eta.renderAsync("admin", {data, admin})
+      await eta.renderAsync("admin", {data, admin, records})
     );
   }
 )
