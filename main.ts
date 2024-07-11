@@ -1,5 +1,5 @@
 import {
-  Hono, csrf, home, data, admin,
+  Hono, csrf, home, data, admin, export_file,
   signout,
   signin_google, callback_google,
   signin_x, callback_x,  
@@ -15,6 +15,7 @@ app.use(csrf({
 app.route('/', home)
 app.route("/data", data)
 app.route("/admin", admin)
+app.route("/export-file", export_file)
 
 app.route("/signout", signout)
 

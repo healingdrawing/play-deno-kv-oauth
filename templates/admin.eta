@@ -14,7 +14,7 @@
     <br>
     <a href="/">Home</a>
     <br>
-    <a href="/export">Export data to file(save database file on your computer)</a>
+    <a href="/export-file">Export data to file(save database file on your computer)</a>
     <br>    
     <a href="/admin">Import data from file(use database file from your computer)</a>
 
