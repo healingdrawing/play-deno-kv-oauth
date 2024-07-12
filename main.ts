@@ -1,5 +1,5 @@
 import {
-  Hono, csrf, home, data, admin, export_file,
+  Hono, csrf, home, data, admin, export_file, import_file,
   signout,
   signin_google, callback_google,
   signin_x, callback_x,  
@@ -16,6 +16,7 @@ app.route('/', home)
 app.route("/data", data)
 app.route("/admin", admin)
 app.route("/export-file", export_file)
+app.route("/import-file", import_file)
 
 app.route("/signout", signout)
 

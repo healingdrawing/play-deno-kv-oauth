@@ -15,8 +15,12 @@
     <a href="/">Home</a>
     <br>
     <a href="/export-file">Export data to file(save database file on your computer)</a>
-    <br>    
-    <a href="/admin">Import data from file(use database file from your computer)</a>
+    <br>
+    <form action="/import-file" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".json">
+      <br>
+      <input type="submit" value="Import data from file(use database file from your computer)">
+    </form>
 
     <hr>
     <% it.records.forEach( (r) => { %>
