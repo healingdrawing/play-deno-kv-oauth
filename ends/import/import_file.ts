@@ -3,6 +3,7 @@ import {
   providers, fetch_profile_data,
   is_admin,
 } from "../../deps.ts"
+import { parse_json_string_database_into_data_array, update_denokv_database_using_data_array } from "./utils.ts";
 
 const app = new Hono()
 
@@ -45,10 +46,26 @@ app.post("/",
     // todo implement get data from form, check using zog, fill denokv
     const body = await c.req.formData()
     const file = body.get("file") // weird, in some reasons typescript check works not clear if you check body.get as if statement
-    if (file !== null){
-      console.log("file.toString=", await (file as File).text())
-    }
     
+    if (file === null){
+      console.log("ERROR: import_file.ts -> body.get('file') === null")
+      return c.html( await eta.renderAsync("error", {}) )
+    }
+
+    const json_string = await (file as File).text()
+    console.log("(=== json_string", json_string)
+
+    const key_data_array = await parse_json_string_database_into_data_array(json_string)
+
+    if (key_data_array === null){
+      console.log("ERROR: import_file.ts -> key_data_array === null")
+      return c.html( await eta.renderAsync("error", {}))
+    }
+
+    await update_denokv_database_using_data_array(key_data_array)
+    
+    
+
 
     return c.redirect("/admin")
   }

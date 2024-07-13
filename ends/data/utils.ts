@@ -2,11 +2,11 @@ import { BodyData } from "https://deno.land/x/hono@v4.3.11/utils/body.ts";
 import { Google_Profile_Data, X_Profile_Data, kvdb, z } from "../../deps.ts"
 
 export interface Data {
-  space_ship_name: string;
-  space_ship_number: string;
-  crew_name: string;
-  captain_licence_number: string;
-  captain_name: string;
+  space_ship_name: string
+  space_ship_number: string
+  crew_name: string
+  captain_licence_number: string
+  captain_name: string
 }
 
 export const data_schema = z.object(
@@ -18,6 +18,24 @@ export const data_schema = z.object(
     captain_name: z.string(),
   }
 )
+
+/** to use as type of function return */
+export interface Key_Data{
+  key: string[]
+  value: Data
+}
+
+/** for import database from json file
+ * 
+ *  Declaration should be here in same file as data_schema declared. In case of import data_schema outside in time of declaration of data_schema_array, error raisen. "can not use data_schema(.shape) until declare"
+ */
+export const data_schema_array = z.array(
+  z.object({
+    key: z.array(z.string()),
+    value: z.object(data_schema.shape), // .shape to avoid hardcoding
+    versionstamp: z.unknown(),
+  }).omit({versionstamp: true}).transform((data) => ({ key: data.key, value: data.value }))
+);
 
 export const data_placeholder:Data = {
   space_ship_name: "N/A",
