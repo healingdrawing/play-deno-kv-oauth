@@ -1,8 +1,8 @@
 import {
-  Hono, csrf, home, data, admin, export_file, import_file,
+  Hono, csrf, home, data, admin, export_file, import_file, manage,
   signout,
   signin_google, callback_google,
-  signin_x, callback_x,  
+  signin_x, callback_x,
 } from "./deps.ts"
 
 
@@ -17,6 +17,7 @@ app.route("/data", data)
 app.route("/admin", admin)
 app.route("/export-file", export_file)
 app.route("/import-file", import_file)
+app.route("/manage", manage)
 
 app.route("/signout", signout)
 

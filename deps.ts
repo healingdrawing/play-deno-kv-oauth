@@ -49,6 +49,7 @@ export { default as admin } from "./ends/admin/admin.ts"
 export { get_all_data_records } from "./ends/admin/utils.ts"
 export { default as export_file } from "./ends/export/export_file.ts"
 export { default as import_file } from "./ends/import/import_file.ts"
+export { default as manage } from "./ends/admin/manage.ts"
 
 export { type Data, data_placeholder, data_schema, data_schema_array, type Key_Data } from "./ends/data/utils.ts"
 export { get_data, set_data } from "./ends/data/utils.ts"

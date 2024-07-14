@@ -24,7 +24,8 @@
 
     <hr>
     <% it.records.forEach( (r) => { %>
-      id = <%= r.key[r.key.length-1] %>
+      <% const id = r.key[r.key.length-1] %>
+      <a href="manage/<%= id %>">manage</a> id = <%= id %>
       <br>
       value = <%= JSON.stringify(r.value) %>
       <br>
