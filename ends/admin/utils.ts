@@ -1,4 +1,5 @@
-import { loadSync, kvdb, Data, data_schema } from "../../deps.ts";
+import { BodyData } from "https://deno.land/x/hono@v4.3.11/utils/body.ts";
+import { loadSync, kvdb, Data, data_schema, data_with_id_schema } from "../../deps.ts";
 loadSync({ export: true })
 
 function admins_list():string[] | null{
@@ -52,4 +53,18 @@ export async function get_data_by_id(
     
   //todo raw, not tested at all
   return data
+}
+
+export async function set_data_by_id(body:BodyData):Promise<boolean>{
+  try{
+    const data_with_id = await data_with_id_schema.parseAsync(body)
+    const { system_id,...data } = data_with_id;
+    console.log("data parsed inside post", data) //todo remove
+    await kvdb.set(["data", system_id], data)// it should be stable, so no separate check
+  } catch (e) {
+    console.log("ERROR: set_data_by_id parse data from body | ", e, " | body ", body);//todo clear later, since body is BodyData , but not a just string
+    return false
+  }
+    
+  return true
 }

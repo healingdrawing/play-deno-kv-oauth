@@ -37,6 +37,8 @@ export const data_schema_array = z.array(
   }).omit({versionstamp: true}).transform((data) => ({ key: data.key, value: data.value }))
 );
 
+export const data_with_id_schema = data_schema.extend({ system_id: z.string(), });// for case of admin edit the record
+
 export const data_placeholder:Data = {
   space_ship_name: "N/A",
   space_ship_number: "N/A",
@@ -86,16 +88,14 @@ export async function set_data(
     return false
   }
 
-  let data:Data
   try{
-    data = await data_schema.parseAsync(body)
+    const data = await data_schema.parseAsync(body)
     console.log("data parsed inside post", data) //todo remove
+    await kvdb.set(["data", profile.id], data)// it should be stable, so no separate check
   } catch (e) {
     console.log("ERROR: parse data from body | ", e, " | session_id ", session_id);
     return false
   }
-
-  await kvdb.set(["data", profile.id], data)
     
   return true
 }
