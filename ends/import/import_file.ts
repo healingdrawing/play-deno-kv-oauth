@@ -9,8 +9,6 @@ const app = new Hono()
 
 app.post("/",
   async (c) => {
-    console.log("we are inside import_file.ts post /")
-
     const session_id = await getSessionId(c.req.raw).then(entry => entry);
     if (session_id === undefined || session_id === "") {
       console.log("ERROR: session_id ", session_id)

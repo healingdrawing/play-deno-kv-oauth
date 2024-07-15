@@ -26,8 +26,7 @@ export async function get_all_data_records(){
   for await (const e of entries){
     records.push(e as Deno.KvEntry<Data>)
   }
-
-  console.log("The records: \n",records.toString())
+  
   return records
 }
 
@@ -44,7 +43,6 @@ export async function get_data_by_id(
   }
 
   try {
-    console.log(data_raw)
     data = await data_schema.parseAsync(data_raw)
   } catch (e) {
     console.log("ERROR: parse data from kvdb | ", e, " | system id ", system_id);

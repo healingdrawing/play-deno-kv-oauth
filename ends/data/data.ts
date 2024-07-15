@@ -33,8 +33,6 @@ app.get("/",
 
 app.post("/",
   async (c) => {
-    console.log("we are inside post redirect")
-
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
     if (session_id === undefined || session_id === "") {
       console.log("ERROR: session_id ", session_id)
@@ -60,8 +58,6 @@ app.post("/",
 
 app.get("/edit",
   async (c) => {
-    console.log("we are inside /edit")
-
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
     if (session_id === undefined || session_id === "") {
       console.log("ERROR: session_id ", session_id)
