@@ -3,6 +3,7 @@ import {
   providers, fetch_profile_data,
   is_admin,
   get_all_data_records,
+  get_data_by_id,
 } from "../../deps.ts"
 
 const app = new Hono()
@@ -49,10 +50,10 @@ app.get("/:id",
 
     console.log("system_id is", system_id) //todo implement manage record by admin using system_id. Create get_data_by_id
     //todo artefacts, refactor next, do not forget add system_id into data from kvdb
-    const records = await get_all_data_records()
+    const record = await get_data_by_id(system_id)
 
     return c.html(
-      await eta.renderAsync("manage", {data, admin, records})
+      await eta.renderAsync("manage", {data, admin, record, system_id})
     );
   }
 )
