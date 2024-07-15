@@ -3,15 +3,11 @@ import { Hono, kvdb, getSessionId, eta,
   data_placeholder, providers, set_data, get_data,
 } from "../../deps.ts"
 
-/** at the moment for both google and x */
 const app = new Hono()
 
 app.get("/",
-  async (c) => {
-    console.log("we are inside get /")
-    
+  async (c) => {    
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
-    console.log(session_id) //todo remove
     if (session_id === undefined || session_id === "") {
       console.log("ERROR: session_id ", session_id)
       return c.html( await eta.renderAsync("index", {}) )
@@ -52,7 +48,7 @@ app.post("/",
     }
 
     const body = await c.req.parseBody()
-    console.log("body ", body) // is ok
+    console.log("body ", body)
 
     if (await set_data(provider, session_id, body) === false){
       return c.html( await eta.renderAsync("error", {}) )
@@ -67,7 +63,6 @@ app.get("/edit",
     console.log("we are inside /edit")
 
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
-    console.log(session_id) //todo remove
     if (session_id === undefined || session_id === "") {
       console.log("ERROR: session_id ", session_id)
       return c.html( await eta.renderAsync("index", {}) )

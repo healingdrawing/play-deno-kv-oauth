@@ -1,8 +1,7 @@
 import {
   Hono, Tokens, kvdb, getSessionId, eta,
   providers, fetch_profile_data,
-  is_admin,
-  get_all_data_records,
+  is_admin, get_all_data_records,
 } from "../../deps.ts"
 
 const app = new Hono()
@@ -37,8 +36,6 @@ app.get("/",
     if (!admin) {
       console.log("ERROR: attempt to access admin panel without permission", provider)
       return c.html( await eta.renderAsync("error", {}) )
-    } else {
-      console.log("Admin logged in") //todo remove later
     }
     
     const records = await get_all_data_records()

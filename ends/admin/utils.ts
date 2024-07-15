@@ -50,8 +50,7 @@ export async function get_data_by_id(
     console.log("ERROR: parse data from kvdb | ", e, " | system id ", system_id);
     return null
   }
-    
-  //todo raw, not tested at all
+  
   return data
 }
 
@@ -59,10 +58,9 @@ export async function set_data_by_id(body:BodyData):Promise<boolean>{
   try{
     const data_with_id = await data_with_id_schema.parseAsync(body)
     const { system_id,...data } = data_with_id;
-    console.log("data parsed inside post", data) //todo remove
     await kvdb.set(["data", system_id], data)// it should be stable, so no separate check
   } catch (e) {
-    console.log("ERROR: set_data_by_id parse data from body | ", e, " | body ", body);//todo clear later, since body is BodyData , but not a just string
+    console.log("ERROR: set_data_by_id parse data from body | ", e)
     return false
   }
     

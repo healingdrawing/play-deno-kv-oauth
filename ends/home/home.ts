@@ -5,14 +5,13 @@ import {
   is_admin,
 } from "../../deps.ts"
 
-/** at the moment for both google and x */
 const app = new Hono()
 
 app.get("/",
   async (c) => {
     const session_id = await getSessionId(c.req.raw).then(entry => entry);
     if (session_id === undefined || session_id === "") {
-      console.log("ERROR: session_id ", session_id)
+      console.log("WARNING: session_id ", session_id) //todo can be refactored or removed, since fires just on logout or first visit
       return c.html( await eta.renderAsync("index", {}) )
     }
 
@@ -34,7 +33,7 @@ app.get("/",
       return c.html( await eta.renderAsync("error", {}) )
     }
     
-    if (is_admin(data.id)) console.log("Admin logged in") //todo remove later
+    if (is_admin(data.id)) console.log("Admin logged in at", new Date().toUTCString())
 
     return c.html(
       await eta.renderAsync("profile", {data, admin:is_admin(data.id)})

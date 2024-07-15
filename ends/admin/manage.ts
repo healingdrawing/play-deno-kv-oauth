@@ -36,8 +36,6 @@ app.get("/:id",
     if (!admin) {
       console.log("ERROR: attempt to access admin panel without permission", provider)
       return c.html( await eta.renderAsync("error", {}) )
-    } else {
-      console.log("Admin logged in") //todo remove later
     }
     
     const system_id = c.req.param('id')
@@ -45,9 +43,7 @@ app.get("/:id",
       console.log("ERROR: bad id ", system_id)
       return c.html( await eta.renderAsync("error", {}) )
     }
-
-    console.log("system_id is", system_id) //todo implement manage record by admin using system_id. Create get_data_by_id
-    //todo artefacts, refactor next, do not forget add system_id into data from kvdb
+    
     const record = await get_data_by_id(system_id)
 
     return c.html(
@@ -87,8 +83,6 @@ app.post("/",
     if (!admin) {
       console.log("ERROR: attempt to access admin panel without permission", provider)
       return c.html( await eta.renderAsync("error", {}) )
-    } else {
-      console.log("Admin logged in") //todo remove later
     }
 
     const body = await c.req.parseBody()

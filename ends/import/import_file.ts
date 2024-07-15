@@ -39,13 +39,10 @@ app.post("/",
     if (!admin) {
       console.log("ERROR: attempt to access admin panel without permission", provider)
       return c.html( await eta.renderAsync("error", {}) )
-    } else {
-      console.log("Admin logged in") //todo remove later
     }
     
-    // todo implement get data from form, check using zog, fill denokv
     const body = await c.req.formData()
-    const file = body.get("file") // weird, in some reasons typescript check works not clear if you check body.get as if statement
+    const file = body.get("file")
     
     if (file === null){
       console.log("ERROR: import_file.ts -> body.get('file') === null")
@@ -64,9 +61,6 @@ app.post("/",
 
     await update_denokv_database_using_data_array(key_data_array)
     
-    
-
-
     return c.redirect("/admin")
   }
 )

@@ -19,7 +19,7 @@ export const data_schema = z.object(
   }
 )
 
-/** to use as type of function return */
+/** to use as type of function return. import/utils.ts */
 export interface Key_Data{
   key: string[]
   value: Data
@@ -72,8 +72,7 @@ export async function get_data(
     console.log("ERROR: parse data from kvdb | ", e, " | profile id ", profile.id);
     return null
   }
-    
-  //todo raw, not tested at all
+  
   return data
 }
 
@@ -90,7 +89,6 @@ export async function set_data(
 
   try{
     const data = await data_schema.parseAsync(body)
-    console.log("data parsed inside post", data) //todo remove
     await kvdb.set(["data", profile.id], data)// it should be stable, so no separate check
   } catch (e) {
     console.log("ERROR: parse data from body | ", e, " | session_id ", session_id);
