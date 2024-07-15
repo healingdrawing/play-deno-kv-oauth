@@ -6,25 +6,29 @@
 </head>
 <body>
   <header>
-      <h1>Data for the event</h1>
+    <a href="/">Home</a>
+    <p>You are <% if (!it.admin) { %> not <% }%>admin:
+    <%= it.data.info %></p>
+    <p>id: <%= it.data.id %></p>
   </header>
   <main>
-    <a href="/">Home</a>
+    <h1>Manage Data Record</h1>
     
     <form action="/manage" method="post">
-    <h2>System id</h2>
-    <input type="text" id="system_id" name="system_id" value="<%= it.system_id %>" READONLY required>
+    <h2>System id:</h2>
+    <input type="text" id="system_id" name="system_id" value="<%= it.system_id %>" READONLY HIDDEN required>
+    <p><%= it.system_id %></p>
     <h2>Space ship name:</h2>
-    <input type="text" id="space_ship_name" name="space_ship_name" value="<%= it.space_ship_name %>" required>
+    <input type="text" id="space_ship_name" name="space_ship_name" value="<%= it.record.space_ship_name %>" required>
     <h2>Space ship number:</h2>
-    <input type="text" id="space_ship_number" name="space_ship_number" value="<%= it.space_ship_number %>" required>
+    <input type="text" id="space_ship_number" name="space_ship_number" value="<%= it.record.space_ship_number %>" required>
     
     <h2>Crew name:</h2>
-    <input type="text" id="crew_name" name="crew_name" value="<%= it.crew_name %>" required>
+    <input type="text" id="crew_name" name="crew_name" value="<%= it.record.crew_name %>" required>
     <h2>Captain license number:</h2>
-    <input type="text" id="captain_licence_number" name="captain_licence_number" value="<%= it.captain_licence_number %>" required>
+    <input type="text" id="captain_licence_number" name="captain_licence_number" value="<%= it.record.captain_licence_number %>" required>
     <h2>Captain name:</h2>
-    <input type="text" id="captain_name" name="captain_name" value="<%= it.captain_name %>" required>
+    <input type="text" id="captain_name" name="captain_name" value="<%= it.record.captain_name %>" required>
 
     <input type="submit" value="save">
     </form>
