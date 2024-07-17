@@ -3,5 +3,8 @@
     "dev": "deno run --watch main.ts",
     "test": "deno run --inspect-wait --allow-all --unstable-kv main_test.ts",
     "bang": "deno run --allow-all --unstable-kv main.ts"
+  },
+  "deploy": {
+    "flags": [ "--unstable-kv", "--allow-net", "--allow-env", "--allow-read", "--allow-write" ]
   }
 }
