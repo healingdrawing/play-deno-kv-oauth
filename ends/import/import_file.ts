@@ -48,7 +48,6 @@ app.post("/",
     }
 
     const json_string = await (file as File).text()
-    console.log("(=== json_string", json_string)
 
     const key_data_array = await parse_json_string_database_into_data_array(json_string)
 
