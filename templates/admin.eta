@@ -27,7 +27,7 @@
     <hr>
     <% it.records.forEach( (r) => { %>
       <% const id = r.key[r.key.length-1] %>
-      <form action="/manage/<%= id %>" method="delete"
+      <form action="/manage/<%= id %>" method="post"
       onsubmit="return confirm('Press [OK] to DELETE from database record\n\n <%= id %>')">
         <a href="/manage/<%= id %>">manage</a> id = <%= id %>
         <input type="submit" value="delete">

@@ -31,9 +31,7 @@ export async function get_all_data_records(){
 }
 
 /** system_id - unique id given by google or x/twitter oauth2 response */
-export async function get_data_by_id(
-  system_id:string
-):Promise<Data | null>{
+export async function get_data_by_id( system_id:string ):Promise<Data | null>{
   let data:Data | null = null
       
   const data_raw = await kvdb.get<Data>(["data", system_id]).then(d => d.value)
@@ -59,6 +57,17 @@ export async function set_data_by_id(body:BodyData):Promise<boolean>{
     await kvdb.set(["data", system_id], data)// it should be stable, so no separate check
   } catch (e) {
     console.log("ERROR: set_data_by_id parse data from body | ", e)
+    return false
+  }
+    
+  return true
+}
+
+export async function delete_data_by_id(system_id:string):Promise<boolean>{
+  try{
+    await kvdb.delete(["data", system_id]) //at the moment try looks useless, because delete return nothing
+  } catch (e) {
+    console.log("ERROR: delete_data_by_id | ", e)
     return false
   }
     
