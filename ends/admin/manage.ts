@@ -6,6 +6,12 @@ import {
 
 const app = new Hono()
 
+app.delete("/:id",
+  async (c) => {
+    console.log("inside Delete",c)
+  }
+)
+
 app.get("/:id",
   async (c) => {
     const session_id = await getSessionId(c.req.raw).then(entry => entry);
@@ -94,6 +100,5 @@ app.post("/",
     return c.redirect("/admin");
   }
 )
-
 
 export default app

@@ -29,7 +29,7 @@
       <% const id = r.key[r.key.length-1] %>
       <form action="/manage/<%= id %>" method="delete"
       onsubmit="return confirm('Press [OK] to DELETE from database record\n\n <%= id %>')">
-        <a href="manage/<%= id %>">manage</a> id = <%= id %>
+        <a href="/manage/<%= id %>">manage</a> id = <%= id %>
         <input type="submit" value="delete">
       </form>
       <br>
