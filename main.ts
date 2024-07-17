@@ -6,7 +6,7 @@ import {
 } from "./deps.ts"
 
 const app = new Hono()
-app.use(csrf({ origin: ['http://localhost:8000', 'development.myapp.example.com'], }))
+app.use(csrf({ origin: ['http://localhost:8000', 'https://crud-deno-hono-eta-oauth.deno.dev'], }))
 // app.use(csrf({ origin: (origin) => { console.log("IT IS ALIVE!",origin); return true }}))
 
 app.route('/', home)
