@@ -5,7 +5,7 @@ loadSync({ export: true })
 
 export const google_oauth_config = createGoogleOAuthConfig({
   // redirectUri: "http://localhost:8000/callback-google",
-  redirectUri: "http://crud-deno-hono-eta-oauth.deno.dev/callback-google",
+  redirectUri: "https://crud-deno-hono-eta-oauth.deno.dev/callback-google",
   scope: "https://www.googleapis.com/auth/userinfo.profile"
 })
 
