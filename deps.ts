@@ -2,7 +2,7 @@ export { join } from "https://deno.land/std@0.224.0/path/mod.ts"
 
 // const db_path = join(Deno.cwd(), "kvdb")
 // console.log(db_path)
-export const kvdb = await Deno.openKv("db")
+export const kvdb = await Deno.openKv() //in some reasons ("db") crushes deploying
 /** implemented providers to oauth2 workflow. At the moment "google" and "x" */
 export const providers = ["google", "x"]
 
