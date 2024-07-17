@@ -16,7 +16,6 @@ app.get("/",
       console.log("signout failed")
     }
 
-
     const response = await signOut(c.req.raw)
     c.header("set-cookie", response.headers.get("set-cookie")!)
     return c.redirect(response.headers.get("location")!, response.status as RedirectStatusCode)

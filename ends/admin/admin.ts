@@ -1,8 +1,8 @@
-
 import {
   Hono, Tokens, kvdb, getSessionId, eta,
   providers, fetch_profile_data,
   is_admin,
+  get_all_data_records,
 } from "../../deps.ts"
 
 const app = new Hono()
@@ -11,7 +11,7 @@ app.get("/",
   async (c) => {
     const session_id = await getSessionId(c.req.raw).then(entry => entry);
     if (session_id === undefined || session_id === "") {
-      console.log("WARNING: session_id ", session_id) //todo can be refactored or removed, since fires just on logout or first visit
+      console.log("ERROR: session_id ", session_id)
       return c.html( await eta.renderAsync("index", {}) )
     }
 
@@ -33,10 +33,16 @@ app.get("/",
       return c.html( await eta.renderAsync("error", {}) )
     }
     
-    if (is_admin(data.id)) console.log("Admin logged in at", new Date().toUTCString())
+    const admin = is_admin(data.id)
+    if (!admin) {
+      console.log("ERROR: attempt to access admin panel without permission", provider)
+      return c.html( await eta.renderAsync("error", {}) )
+    }
+    
+    const records = await get_all_data_records()
 
     return c.html(
-      await eta.renderAsync("profile", {data, admin:is_admin(data.id)})
+      await eta.renderAsync("admin", {data, admin, records})
     );
   }
 )

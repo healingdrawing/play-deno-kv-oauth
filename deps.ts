@@ -11,7 +11,6 @@ import { Eta } from "https://deno.land/x/eta@v3.4.0/src/index.ts"
 export const eta = new Eta({ views: join(Deno.cwd(), "templates") })
 
 export { Hono } from "https://deno.land/x/hono@v4.3.11/mod.ts"
-// export { type Context } from "https://deno.land/x/hono@v4.3.11/mod.ts" //todo remove after check
 export { type RedirectStatusCode } from "https://deno.land/x/hono@v4.3.11/utils/http-status.ts"
 export { csrf } from "https://deno.land/x/hono@v4.3.11/middleware/csrf/index.ts";
 
@@ -44,8 +43,14 @@ export {
 
 
 export { default as home } from "./ends/home/home.ts"
+export { is_admin } from "./ends/admin/utils.ts"
+export { default as admin } from "./ends/admin/admin.ts"
+export { get_all_data_records, get_data_by_id, set_data_by_id, delete_data_by_id } from "./ends/admin/utils.ts"
+export { default as export_file } from "./ends/export/export_file.ts"
+export { default as import_file } from "./ends/import/import_file.ts"
+export { default as manage } from "./ends/admin/manage.ts"
 
-export { type Data, data_placeholder, data_schema } from "./ends/data/utils.ts"
+export { type Data, data_placeholder, data_schema, data_schema_array, type Key_Data, data_with_id_schema } from "./ends/data/utils.ts"
 export { get_data, set_data } from "./ends/data/utils.ts"
 export { default as data } from "./ends/data/data.ts"
 

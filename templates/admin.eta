@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Deno Form Example</title>
+</head>
+<style>
+  body {word-break:break-word} /* break long json strings */
+</style>
+<body>
+  <header>
+      <h1>Welcome, <%= JSON.stringify(it.data.info) %> 🦖</h1>
+      <h2>Your system id is: <%= JSON.stringify(it.data.id) %></h2>
+  </header>
+  <main>
+    <a href="/signout">Logout</a>
+    <a href="/">Home</a>
+    <hr>
+    <a href="/export-file">Export data to file(save database file on your computer)</a>
+    <hr>
+    <form action="/import-file" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".json" required>
+      <br>
+      <input type="submit" value="Import data from file(use database file from your computer)">
+    </form>
+
+    <hr>
+    <% it.records.forEach( (r) => { %>
+      <% const id = r.key[r.key.length-1] %>
+      <form action="/manage/<%= id %>" method="post"
+      onsubmit="return confirm('Press [OK] to DELETE from database record\n\n <%= id %>')">
+        <a href="/manage/<%= id %>">manage</a> id = <%= id %>
+        <input type="submit" value="delete">
+      </form>
+      <br>
+      value = <%= JSON.stringify(r.value) %>
+      <br>
+      versionstamp = <%= r.versionstamp %>
+      <hr>
+    <% }) %>
+  </main>
+</body>
+</html>

@@ -1,17 +1,17 @@
-
 import {
   Hono, Tokens, kvdb, getSessionId, eta,
   providers, fetch_profile_data,
   is_admin,
 } from "../../deps.ts"
+import { parse_json_string_database_into_data_array, update_denokv_database_using_data_array } from "./utils.ts";
 
 const app = new Hono()
 
-app.get("/",
+app.post("/",
   async (c) => {
     const session_id = await getSessionId(c.req.raw).then(entry => entry);
     if (session_id === undefined || session_id === "") {
-      console.log("WARNING: session_id ", session_id) //todo can be refactored or removed, since fires just on logout or first visit
+      console.log("ERROR: session_id ", session_id)
       return c.html( await eta.renderAsync("index", {}) )
     }
 
@@ -33,11 +33,32 @@ app.get("/",
       return c.html( await eta.renderAsync("error", {}) )
     }
     
-    if (is_admin(data.id)) console.log("Admin logged in at", new Date().toUTCString())
+    const admin = is_admin(data.id)
+    if (!admin) {
+      console.log("ERROR: attempt to access admin panel without permission", provider)
+      return c.html( await eta.renderAsync("error", {}) )
+    }
+    
+    const body = await c.req.formData()
+    const file = body.get("file")
+    
+    if (file === null){
+      console.log("ERROR: import_file.ts -> body.get('file') === null")
+      return c.html( await eta.renderAsync("error", {}) )
+    }
 
-    return c.html(
-      await eta.renderAsync("profile", {data, admin:is_admin(data.id)})
-    );
+    const json_string = await (file as File).text()
+
+    const key_data_array = await parse_json_string_database_into_data_array(json_string)
+
+    if (key_data_array === null){
+      console.log("ERROR: import_file.ts -> key_data_array === null")
+      return c.html( await eta.renderAsync("error", {}))
+    }
+
+    await update_denokv_database_using_data_array(key_data_array)
+    
+    return c.redirect("/admin")
   }
 )
 

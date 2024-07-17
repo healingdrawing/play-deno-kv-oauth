@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Record Form</title>
+</head>
+<body>
+  <header>
+    <a href="/">Home</a>
+    <p>You are <% if (!it.admin) { %> not <% }%>admin:
+    <%= it.data.info %></p>
+    <p>id: <%= it.data.id %></p>
+  </header>
+  <main>
+    <h1>Manage Data Record</h1>
+    
+    <form action="/manage" method="post">
+    <h2>System id:</h2>
+    <input type="text" id="system_id" name="system_id" value="<%= it.system_id %>" READONLY HIDDEN required>
+    <p><%= it.system_id %></p>
+    
+    <h2>Space ship name:</h2>
+    <input type="text" id="space_ship_name" name="space_ship_name" value="<%= it.record.space_ship_name %>" required>
+    <h2>Space ship number:</h2>
+    <input type="text" id="space_ship_number" name="space_ship_number" value="<%= it.record.space_ship_number %>" required>
+    
+    <h2>Crew name:</h2>
+    <input type="text" id="crew_name" name="crew_name" value="<%= it.record.crew_name %>" required>
+    <h2>Captain license number:</h2>
+    <input type="text" id="captain_licence_number" name="captain_licence_number" value="<%= it.record.captain_licence_number %>" required>
+    <h2>Captain name:</h2>
+    <input type="text" id="captain_name" name="captain_name" value="<%= it.record.captain_name %>" required>
+
+    <input type="submit" value="save"> 
+    <input type="reset" value="restore"> 
+    <input type="button" onclick="window.reset()" value="reset">
+    </form>
+  </main>
+  <script>
+    function reset(){
+      const ids = [
+        "space_ship_name",
+        "space_ship_number",
+        "crew_name",
+        "captain_licence_number",
+        "captain_name",
+      ];
+      ids.forEach((id) => { document.getElementById(id).value = "N/A"; });
+    }
+  </script>
+</body>
+</html>

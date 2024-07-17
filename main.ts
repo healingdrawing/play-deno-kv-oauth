@@ -1,20 +1,20 @@
 import {
-  Hono, csrf, home, data,
+  Hono, csrf, home, data, admin, export_file, import_file, manage,
   signout,
   signin_google, callback_google,
-  signin_x, callback_x, 
-  
+  signin_x, callback_x,
 } from "./deps.ts"
 
-
 const app = new Hono()
-app.use(csrf({
-  origin: ['http://localhost:8000', 'development.myapp.example.com'],
-}))
+app.use(csrf({ origin: ['http://localhost:8000', 'development.myapp.example.com'], }))
 // app.use(csrf({ origin: (origin) => { console.log("IT IS ALIVE!",origin); return true }}))
 
 app.route('/', home)
 app.route("/data", data)
+app.route("/admin", admin)
+app.route("/export-file", export_file)
+app.route("/import-file", import_file)
+app.route("/manage", manage)
 
 app.route("/signout", signout)
 
