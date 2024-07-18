@@ -1,4 +1,4 @@
-import { Google_Profile_Data, X_Profile_Data, dprint, fetch_google_profile_data, fetch_x_profile_data, providers } from "../deps.ts";
+import { Google_Profile_Data, X_Profile_Data, dprint, fetch_google_profile_data, fetch_x_profile_data } from "../deps.ts";
 
 export interface Profile_Data{
   id: string
@@ -23,6 +23,8 @@ export async function fetch_profile_data(
   return null
 }
 
+/** implemented providers to oauth2 workflow. At the moment "google" and "x" */
+export const providers = ["google", "x"]
 /** at the moment implemented "google" and "x" through the .env file locally and environment variables on deploy */
 export function provider_oauth_config_redirect_uri(provider:string):string{
   if (!providers.includes(provider)){
