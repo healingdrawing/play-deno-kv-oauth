@@ -1,4 +1,4 @@
-import { Google_Profile_Data, X_Profile_Data, dprint, fetch_google_profile_data, fetch_x_profile_data } from "../deps.ts";
+import { Google_Profile_Data, X_Profile_Data, dprint, fetch_google_profile_data, fetch_x_profile_data, providers } from "../deps.ts";
 
 export interface Profile_Data{
   id: string
@@ -23,12 +23,13 @@ export async function fetch_profile_data(
   return null
 }
 
-const PROVIDERS = ["GOOGLE", "X"] // todo refactor to caps
-/** at the moment "GOOGLE" and "X" */
-export function provider_oauth_config_redirect_uri(caps_provider:string):string{
-  if (!["GOOGLE", "X"].includes(caps_provider)){
-    throw new Error(`ERROR: incorrect oauth2 ${caps_provider}.\nAllowed oauth2 providers: ${PROVIDERS}`)
+/** at the moment implemented "google" and "x" through the .env file locally and environment variables on deploy */
+export function provider_oauth_config_redirect_uri(provider:string):string{
+  if (!providers.includes(provider)){
+    throw new Error(`ERROR: incorrect oauth2 ${provider}.\nAllowed oauth2 providers: ${providers}`)
   }
+
+  const caps_provider = provider.toUpperCase() // to follow the style of the environment variables
   
   const uri = Deno.env.get(caps_provider+"_OAUTH_CONFIG_REDIRECT_URI")
   if (uri === undefined) {

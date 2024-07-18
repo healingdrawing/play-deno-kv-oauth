@@ -77,7 +77,7 @@ app.get("/edit",
     }
 
     return c.html(
-      await eta.renderAsync("edit", data) // todo refactor to caps
+      await eta.renderAsync("edit", data) // todo extend to template limits
     );
   }
 )

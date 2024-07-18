@@ -4,7 +4,7 @@ import { kvdb, loadSync, provider_oauth_config_redirect_uri, z } from "../deps.t
 loadSync({ export: true })
 
 export const x_oauth_config = createTwitterOAuthConfig({
-  redirectUri: provider_oauth_config_redirect_uri("X"),
+  redirectUri: provider_oauth_config_redirect_uri("x"),
   scope: ["tweet.read", "users.read"] // in some reasons "tweet.read" is mandatory to read user name. it is weird
 })
 

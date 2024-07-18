@@ -5,7 +5,7 @@ export { dprint } from "./debug/debug.ts"
 // console.log(db_path)
 export const kvdb = await Deno.openKv() //in some reasons ("db") crushes deploying
 /** implemented providers to oauth2 workflow. At the moment "google" and "x" */
-export const providers = ["google", "x"] // todo refactor to caps
+export const providers = ["google", "x"]
 
 import { join } from "https://deno.land/std@0.224.0/path/mod.ts"
 import { Eta } from "https://deno.land/x/eta@v3.4.0/src/index.ts"
