@@ -46,7 +46,7 @@ app.post("/",
     }
 
     const body = await c.req.parseBody()
-    console.log("body ", body)
+    console.log("body ", body) // todo remove later
 
     if (await set_data(provider, session_id, body) === false){
       return c.html( await eta.renderAsync("error", {}) )
@@ -77,7 +77,7 @@ app.get("/edit",
     }
 
     return c.html(
-      await eta.renderAsync("edit", data)
+      await eta.renderAsync("edit", data) // todo refactor to caps
     );
   }
 )

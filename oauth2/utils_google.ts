@@ -32,7 +32,7 @@ const google_schema = z.object(
  * Refresh works from kvdb*/
 export async function fetch_google_profile_data(access_token: string, session_id: string): Promise<Google_Profile_Data | undefined> {
   
-  let profile = await kvdb.get<Google_Profile_Data>(["profile", "google", session_id]).then(d => d.value)
+  let profile = await kvdb.get<Google_Profile_Data>(["profile", "google", session_id]).then(d => d.value) // todo refactor to caps
   if (profile !== null){ return profile }
 
   const url = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + access_token
@@ -42,10 +42,10 @@ export async function fetch_google_profile_data(access_token: string, session_id
     const data_json = await response.json()
     profile = await google_schema.parseAsync(data_json)
 
-    const profiles = kvdb.list<Google_Profile_Data>({prefix: ["profile", "google"]})
+    const profiles = kvdb.list<Google_Profile_Data>({prefix: ["profile", "google"]}) // todo refactor to caps
     for await (const x of profiles ){ if (x.value.id === profile.id) kvdb.delete(x.key) }
     
-    await kvdb.set(["profile", "google", session_id], profile)
+    await kvdb.set(["profile", "google", session_id], profile) // todo refactor to caps
 
     return profile
   } catch (e) {

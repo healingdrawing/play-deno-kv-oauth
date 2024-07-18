@@ -23,7 +23,7 @@ export async function fetch_profile_data(
   return null
 }
 
-const PROVIDERS = ["GOOGLE", "X"]
+const PROVIDERS = ["GOOGLE", "X"] // todo refactor to caps
 /** at the moment "GOOGLE" and "X" */
 export function provider_oauth_config_redirect_uri(caps_provider:string):string{
   if (!["GOOGLE", "X"].includes(caps_provider)){
