@@ -1,12 +1,11 @@
 import { createGoogleOAuthConfig } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts"
 
-import { loadSync, z, kvdb } from "../deps.ts"
+import { loadSync, z, kvdb, provider_oauth_config_redirect_uri } from "../deps.ts"
 loadSync({ export: true })
 
 //todo it is awful. you need implement parallel solution for localhost, or rehardcode every time you need localhost, facepalm. Should look at env
 export const google_oauth_config = createGoogleOAuthConfig({
-  // redirectUri: "http://localhost:8000/callback-google",
-  redirectUri: "https://crud-deno-hono-eta-oauth.deno.dev/callback-google",
+  redirectUri: provider_oauth_config_redirect_uri("GOOGLE"),
   scope: "https://www.googleapis.com/auth/userinfo.profile"
 })
 

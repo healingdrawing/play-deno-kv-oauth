@@ -1,4 +1,5 @@
 export { join } from "https://deno.land/std@0.224.0/path/mod.ts"
+export { dprint } from "./debug/debug.ts"
 
 // const db_path = join(Deno.cwd(), "kvdb")
 // console.log(db_path)
@@ -23,6 +24,8 @@ export {
 export { type Tokens } from "https://deno.land/x/deno_kv_oauth@v0.10.0/deps.ts"
 
 export { z } from "https://deno.land/x/zod@v3.23.8/mod.ts"
+
+export { provider_oauth_config_redirect_uri } from "./oauth2/utils.ts"
 
 export {
   google_oauth_config,
