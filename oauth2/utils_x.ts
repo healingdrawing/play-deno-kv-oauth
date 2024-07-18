@@ -1,10 +1,10 @@
 import { createTwitterOAuthConfig } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts"
 
-import { kvdb, loadSync, z } from "../deps.ts"
+import { kvdb, loadSync, provider_oauth_config_redirect_uri, z } from "../deps.ts"
 loadSync({ export: true })
 
 export const x_oauth_config = createTwitterOAuthConfig({
-  redirectUri: "http://localhost:8000/callback-x",
+  redirectUri: provider_oauth_config_redirect_uri("X"),
   scope: ["tweet.read", "users.read"] // in some reasons "tweet.read" is mandatory to read user name. it is weird
 })
 
