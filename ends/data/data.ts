@@ -1,6 +1,6 @@
 
 import { Hono, kvdb, getSessionId, eta,
-  data_placeholder, providers, set_data, get_data,
+  data_placeholder, providers, set_data, get_data, data_form_limits
 } from "../../deps.ts"
 
 const app = new Hono()
@@ -77,7 +77,7 @@ app.get("/edit",
     }
 
     return c.html(
-      await eta.renderAsync("edit", data) // todo extend to template limits
+      await eta.renderAsync("edit", {data, limit:data_form_limits}) // todo extend to template limits
     );
   }
 )

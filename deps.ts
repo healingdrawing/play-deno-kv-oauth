@@ -54,7 +54,7 @@ export { default as import_file } from "./ends/import/import_file.ts"
 export { default as manage } from "./ends/admin/manage.ts"
 
 export { type Data, data_placeholder, data_schema, data_schema_array, type Key_Data, data_with_id_schema } from "./ends/data/utils.ts"
-export { get_data, set_data } from "./ends/data/utils.ts"
+export { get_data, set_data, data_form_limits } from "./ends/data/utils.ts"
 export { default as data } from "./ends/data/data.ts"
 
 export { default as signout } from "./oauth2/signout.ts"
