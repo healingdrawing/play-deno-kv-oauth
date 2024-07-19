@@ -35,7 +35,7 @@ export const data_schema = z.object(
     crew_name: z.string().trim().min(1).max(data_form_limits.crew_name),
     captain_licence_number: z.string().trim().min(1).max(data_form_limits.captain_licence_number),
     captain_name: z.string().trim().min(1).max(data_form_limits.captain_name),
-    valid_until: z.string().trim().length(10).date().optional() /* for html input type date -> yyyy-mm-dd */
+    valid_until: z.string().trim().date().optional() /* for html input type date -> yyyy-mm-dd */
   }
 )
 

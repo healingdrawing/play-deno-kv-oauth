@@ -31,10 +31,10 @@
     <h2>Captain name:</h2>
     <input type="text" id="captain_name" name="captain_name" value="<%= it.record.captain_name %>" required>
 
-    <h2>Valid until: <input type="date" id="valid_until" name="valid_until" value="<%= it.record.valid_until %>"></h2>
+    <h2>Valid until: <input type="date" id="valid_until" name="valid_until" value="<%= it.record.valid_until %>" required><input type="button" id="reset_date" name="reset_date" value="reset" onclick="document.getElementById('valid_until').value = '0001-01-01'"></h2>
 
-    <input type="submit" value="save"> 
-    <input type="reset" value="restore"> 
+    <input type="submit" value="save">
+    <input type="reset" value="restore">
     <input type="button" onclick="window.reset()" value="reset">
     </form>
   </main>
@@ -48,6 +48,7 @@
         "captain_name",
       ];
       ids.forEach((id) => { document.getElementById(id).value = "N/A"; });
+      document.getElementById("reset_date").click();
     }
   </script>
 </body>
