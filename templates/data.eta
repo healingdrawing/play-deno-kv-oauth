@@ -23,6 +23,8 @@
     <h2>Captain name:</h2>
     <p><%= it.captain_name %></p>
 
+    <h2>valid until: <%= it.valid_until %></h2>
+
     <a href="/data/edit">Edit</a>
   </main>
 </body>

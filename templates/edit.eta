@@ -24,6 +24,9 @@
     <h2>Captain name:</h2>
     <input type="text" id="captain_name" name="captain_name" value="<%= it.data.captain_name %>" maxlength="<%= it.limit.captain_name %>" required>
 
+    <h2>valid until: <%= it.data.valid_until %></h2>
+    <input type="date" id="valid_until" name="valid_until" value="<%= it.data.valid_until %>" readonly hidden required>
+
     <input type="submit" value="save">
     </form>
 

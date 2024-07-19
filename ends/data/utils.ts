@@ -10,6 +10,7 @@ interface Data_Form_Limits {
   captain_name:number
 }
 
+/** limits for length of fields for interface Data */
 export const data_form_limits:Data_Form_Limits = {
   space_ship_name: 100,
   space_ship_number: 100,
@@ -24,6 +25,7 @@ export interface Data {
   crew_name: string
   captain_licence_number: string
   captain_name: string
+  valid_until?: string
 }
 
 export const data_schema = z.object(
@@ -33,6 +35,7 @@ export const data_schema = z.object(
     crew_name: z.string().trim().min(1).max(data_form_limits.crew_name),
     captain_licence_number: z.string().trim().min(1).max(data_form_limits.captain_licence_number),
     captain_name: z.string().trim().min(1).max(data_form_limits.captain_name),
+    valid_until: z.string().trim().length(10).date().optional() /* for html input type date -> yyyy-mm-dd */
   }
 )
 
@@ -62,6 +65,7 @@ export const data_placeholder:Data = {
   crew_name: "N/A",
   captain_licence_number: "N/A",
   captain_name: "N/A",
+  valid_until: undefined,
 }
 
 export async function get_data(
