@@ -23,12 +23,15 @@ export async function fetch_profile_data(
   return null
 }
 
-const PROVIDERS = ["GOOGLE", "X"]
-/** at the moment "GOOGLE" and "X" */
-export function provider_oauth_config_redirect_uri(caps_provider:string):string{
-  if (!["GOOGLE", "X"].includes(caps_provider)){
-    throw new Error(`ERROR: incorrect oauth2 ${caps_provider}.\nAllowed oauth2 providers: ${PROVIDERS}`)
+/** implemented providers to oauth2 workflow. At the moment "google" and "x" */
+export const providers = ["google", "x"]
+/** at the moment implemented "google" and "x" through the .env file locally and environment variables on deploy */
+export function provider_oauth_config_redirect_uri(provider:string):string{
+  if (!providers.includes(provider)){
+    throw new Error(`ERROR: incorrect oauth2 ${provider}.\nAllowed oauth2 providers: ${providers}`)
   }
+
+  const caps_provider = provider.toUpperCase() // to follow the style of the environment variables
   
   const uri = Deno.env.get(caps_provider+"_OAUTH_CONFIG_REDIRECT_URI")
   if (uri === undefined) {

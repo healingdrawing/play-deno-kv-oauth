@@ -3,9 +3,8 @@ import { createGoogleOAuthConfig } from "https://deno.land/x/deno_kv_oauth@v0.10
 import { loadSync, z, kvdb, provider_oauth_config_redirect_uri } from "../deps.ts"
 loadSync({ export: true })
 
-//todo it is awful. you need implement parallel solution for localhost, or rehardcode every time you need localhost, facepalm. Should look at env
 export const google_oauth_config = createGoogleOAuthConfig({
-  redirectUri: provider_oauth_config_redirect_uri("GOOGLE"),
+  redirectUri: provider_oauth_config_redirect_uri("google"),
   scope: "https://www.googleapis.com/auth/userinfo.profile"
 })
 
@@ -51,5 +50,5 @@ export async function fetch_google_profile_data(access_token: string, session_id
   } catch (e) {
     console.log("ERROR: fetch_google_profile_data | ", e)
   }
-  return undefined;  
+  return undefined
 }

@@ -2,6 +2,22 @@
 import { BodyData } from "https://deno.land/x/hono@v4.3.11/utils/body.ts";
 import { Google_Profile_Data, X_Profile_Data, kvdb, z } from "../../deps.ts"
 
+interface Data_Form_Limits {
+  space_ship_name:number
+  space_ship_number:number
+  crew_name:number
+  captain_licence_number:number
+  captain_name:number
+}
+
+export const data_form_limits:Data_Form_Limits = {
+  space_ship_name: 100,
+  space_ship_number: 100,
+  crew_name: 100,
+  captain_licence_number: 100,
+  captain_name: 100,
+}
+
 export interface Data {
   space_ship_name: string
   space_ship_number: string
@@ -12,11 +28,11 @@ export interface Data {
 
 export const data_schema = z.object(
   {
-    space_ship_name: z.string(),
-    space_ship_number: z.string(),
-    crew_name: z.string(),
-    captain_licence_number: z.string(),
-    captain_name: z.string(),
+    space_ship_name: z.string().trim().min(1).max(data_form_limits.space_ship_name),
+    space_ship_number: z.string().trim().min(1).max(data_form_limits.space_ship_number),
+    crew_name: z.string().trim().min(1).max(data_form_limits.crew_name),
+    captain_licence_number: z.string().trim().min(1).max(data_form_limits.captain_licence_number),
+    captain_name: z.string().trim().min(1).max(data_form_limits.captain_name),
   }
 )
 

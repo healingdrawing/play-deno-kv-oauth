@@ -1,11 +1,11 @@
 export { join } from "https://deno.land/std@0.224.0/path/mod.ts"
 export { dprint } from "./debug/debug.ts"
+export { providers } from "./oauth2/utils.ts"
 
 // const db_path = join(Deno.cwd(), "kvdb")
 // console.log(db_path)
 export const kvdb = await Deno.openKv() //in some reasons ("db") crushes deploying
-/** implemented providers to oauth2 workflow. At the moment "google" and "x" */
-export const providers = ["google", "x"]
+
 
 import { join } from "https://deno.land/std@0.224.0/path/mod.ts"
 import { Eta } from "https://deno.land/x/eta@v3.4.0/src/index.ts"
@@ -54,7 +54,7 @@ export { default as import_file } from "./ends/import/import_file.ts"
 export { default as manage } from "./ends/admin/manage.ts"
 
 export { type Data, data_placeholder, data_schema, data_schema_array, type Key_Data, data_with_id_schema } from "./ends/data/utils.ts"
-export { get_data, set_data } from "./ends/data/utils.ts"
+export { get_data, set_data, data_form_limits } from "./ends/data/utils.ts"
 export { default as data } from "./ends/data/data.ts"
 
 export { default as signout } from "./oauth2/signout.ts"
