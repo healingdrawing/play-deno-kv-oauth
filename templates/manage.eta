@@ -16,7 +16,7 @@
     
     <form action="/manage" method="post">
     <h2>System id:</h2>
-    <input type="text" id="system_id" name="system_id" value="<%= it.system_id %>" READONLY HIDDEN required>
+    <input type="text" id="system_id" name="system_id" value="<%= it.system_id %>" readonly hidden required>
     <p><%= it.system_id %></p>
     
     <h2>Space ship name:</h2>
@@ -30,6 +30,8 @@
     <input type="text" id="captain_licence_number" name="captain_licence_number" value="<%= it.record.captain_licence_number %>" required>
     <h2>Captain name:</h2>
     <input type="text" id="captain_name" name="captain_name" value="<%= it.record.captain_name %>" required>
+
+    <h2>Valid until: <input type="date" id="valid_until" name="valid_until" value="<%= it.record.valid_until %>"></h2>
 
     <input type="submit" value="save"> 
     <input type="reset" value="restore"> 
