@@ -3,6 +3,7 @@ import {
   Hono, Tokens, kvdb, getSessionId, eta,
   providers, fetch_profile_data,
   is_admin,
+  throw_error,
 } from "../../deps.ts"
 
 const app = new Hono()
@@ -19,12 +20,14 @@ app.get("/",
     const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)
     if (provider === null || !providers.includes(provider)){
       console.log("ERROR: get provider ", provider)
+      return throw_error(500, "Internal Server Error")
       return c.html( await eta.renderAsync("error", {}) )
     }
 
     const tokens = await kvdb.get<Tokens>(["tokens", session_id]).then(entry => entry.value)
     if (tokens === null){
       console.log("ERROR: get tokens ", tokens)
+      return throw_error(500, "Internal Server Error")
       return c.html( await eta.renderAsync("error", {}) )
     }
     

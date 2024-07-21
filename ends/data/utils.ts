@@ -65,7 +65,7 @@ export const data_placeholder:Data = {
   crew_name: "N/A",
   captain_licence_number: "N/A",
   captain_name: "N/A",
-  valid_until: undefined,
+  valid_until: "0001-01-01",
 }
 
 export async function get_data(

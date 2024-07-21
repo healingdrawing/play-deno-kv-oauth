@@ -13,6 +13,9 @@
   },
   "redirects": {
     "https://deno.land/x/eta/src/index.ts": "https://deno.land/x/eta@v3.4.0/src/index.ts",
+    "https://deno.land/x/hono/middleware/body-limit/index.ts": "https://deno.land/x/hono@v4.3.11/middleware/body-limit/index.ts",
+    "https://deno.land/x/hono/middleware/bodyLimit/index.ts": "https://deno.land/x/hono@v4.3.11/middleware/bodyLimit/index.ts",
+    "https://deno.land/x/hono/middleware/bodylimit/index.ts": "https://deno.land/x/hono@v4.3.11/middleware/bodylimit/index.ts",
     "https://deno.land/x/zod/mod.ts": "https://deno.land/x/zod@v3.23.8/mod.ts"
   },
   "remote": {
