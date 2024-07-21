@@ -3,6 +3,7 @@ import {
   Hono, Tokens, kvdb, getSessionId, eta,
   providers, fetch_profile_data,
   is_admin,
+  throw_error,
 } from "../../deps.ts"
 
 const app = new Hono()
@@ -13,6 +14,7 @@ app.get("/",
     if (session_id === undefined || session_id === "") {
       console.log("WARNING: session_id ", session_id) //todo can be refactored or removed, since fires just on logout or first visit
       return c.html( await eta.renderAsync("index", {}) )
+      //todo return throw_error(401, "Custom error message") use this to manage errors
     }
 
     const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)

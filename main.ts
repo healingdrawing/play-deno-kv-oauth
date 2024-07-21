@@ -1,5 +1,6 @@
+import { HTTPException } from "https://deno.land/x/hono@v4.3.11/mod.ts";
 import {
-  Hono, csrf, home, data, admin, export_file, import_file, manage,
+  Hono, csrf, home, data, admin, export_file, import_file, manage, error_handler,
   signout,
   signin_google, callback_google,
   signin_x, callback_x,
@@ -24,5 +25,6 @@ app.route("/signin-x", signin_x)
 app.route("/callback-google", callback_google)
 app.route("/callback-x", callback_x)
 
+app.onError(error_handler)
 
 Deno.serve(app.fetch)
