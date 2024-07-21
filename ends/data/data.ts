@@ -1,6 +1,7 @@
 
 import { Hono, kvdb, getSessionId, eta,
-  data_placeholder, providers, set_data, get_data, data_form_limits
+  data_placeholder, providers, set_data, get_data, data_form_limits,
+  throw_error
 } from "../../deps.ts"
 
 const app = new Hono()
@@ -10,13 +11,13 @@ app.get("/",
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
     if (session_id === undefined || session_id === "") {
       console.log("ERROR: session_id ", session_id)
-      return c.html( await eta.renderAsync("index", {}) )
+      return throw_error(401, "incorrect session")
     }
 
     const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)
     if (provider === null || !providers.includes(provider)){
       console.log("ERROR: provider ", provider)
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(511, "incorrect provider")
     }
 
     let data = await get_data(provider, session_id)
@@ -25,9 +26,14 @@ app.get("/",
       data = data_placeholder
     }
     
-    return c.html(
-      await eta.renderAsync("data", data)
-    );
+    try{
+      return c.html(
+        await eta.renderAsync("data", data)
+      )
+    } catch(e){
+      console.log(e.toString())
+      return throw_error(500, "data template damaged")
+    }
   }
 )
 
@@ -36,20 +42,20 @@ app.post("/",
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
     if (session_id === undefined || session_id === "") {
       console.log("ERROR: session_id ", session_id)
-      return c.html( await eta.renderAsync("index", {}) )
+      return throw_error(401, "incorrect session")
     }
 
     const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)
     if (provider === null || !providers.includes(provider)){
       console.log("ERROR: provider ", provider)
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(511, "incorrect provider")
     }
 
     const body = await c.req.parseBody()
     console.log("body ", body) // todo remove later
 
     if (await set_data(provider, session_id, body) === false){
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(400, "incorrect form data")
     }
 
     return c.redirect("/data")
@@ -61,13 +67,13 @@ app.get("/edit",
     const session_id = await getSessionId(c.req.raw).then(entry => entry as string | undefined);
     if (session_id === undefined || session_id === "") {
       console.log("ERROR: session_id ", session_id)
-      return c.html( await eta.renderAsync("index", {}) )
+      return throw_error(401, "incorrect session")
     }
 
     const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)
     if (provider === null || !providers.includes(provider)){
       console.log("ERROR: provider ", provider)
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(511, "incorrect provider")
     }
 
     let data = await get_data(provider, session_id)
@@ -76,9 +82,14 @@ app.get("/edit",
       data = data_placeholder
     }
 
-    return c.html(
-      await eta.renderAsync("edit", {data, limit:data_form_limits}) // todo extend to template limits
-    );
+    try{
+      return c.html(
+        await eta.renderAsync("edit", {data, limit:data_form_limits})
+      )
+    } catch(e){
+      console.log(e.toString())
+      return throw_error(500, "edit template damaged")
+    }
   }
 )
 

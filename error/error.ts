@@ -1,10 +1,10 @@
 import { HTTPException } from "https://deno.land/x/hono@v4.3.11/mod.ts";
 import { ErrorHandler } from "https://deno.land/x/hono@v4.3.11/mod.ts"
 import { StatusCode } from "https://deno.land/x/hono@v4.3.11/utils/http-status.ts";
-import { eta } from "../deps.ts"
+import { eta, dprint } from "../deps.ts"
 
 export const error_handler:ErrorHandler = async (err, c) => {
-  console.log("===INSIDE ERROR_HANDLER===", err.toString()) // todo remove later
+  console.log(dprint("ERROR_HANDLER", err.toString())) // todo remove later
   
   let e = err as HTTPException
   if (e.status === undefined || e.message === undefined){
@@ -18,10 +18,31 @@ export const error_handler:ErrorHandler = async (err, c) => {
   return c.html(await eta.renderAsync("error", {code:e.status, info:e.message}),e.status)
 }
 
-/** throw an error properly to handle using app.onError() */
+/** throw an error properly to handle using app.onError()
+ * 
+ * 400: "Bad Request"
+ * 
+ * 401: "Unauthorized"
+ * 
+ * 403: "Forbidden" - have no access rights
+ * 
+ * 404: "Not Found"
+ * 
+ * 413: "Payload Too Large"
+ * 
+ * 511: "Network Authentication Required"
+ * 
+ * 502: "Bad Gateway" - invalid response from outside of app (f.e. api)
+ * 
+ * 500: "Internal Server Error"
+ */
 export function throw_error(status_code:StatusCode, message?:string){
-  if (message) throw new HTTPException(status_code, { message })
+  if (message) throw new HTTPException(status_code, { message: error_message(status_code) + " [" + message + "]" })
   else throw new HTTPException(status_code, { message: error_message(status_code) })
+}
+
+export const custom_http_exception = (status_code:StatusCode):HTTPException => {
+  return new HTTPException(status_code, {message: error_message(status_code)})
 }
 
 const error_message = (status_code:StatusCode):string => {
@@ -40,8 +61,4 @@ const error_message = (status_code:StatusCode):string => {
     }
 
   return r
-}
-
-export const custom_http_exception = (status_code:StatusCode):HTTPException => {
-  return new HTTPException(status_code, {message: error_message(status_code)})
 }

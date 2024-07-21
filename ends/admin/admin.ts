@@ -3,6 +3,7 @@ import {
   providers, fetch_profile_data,
   is_admin,
   get_all_data_records,
+  throw_error,
 } from "../../deps.ts"
 
 const app = new Hono()
@@ -12,38 +13,44 @@ app.get("/",
     const session_id = await getSessionId(c.req.raw).then(entry => entry);
     if (session_id === undefined || session_id === "") {
       console.log("ERROR: session_id ", session_id)
-      return c.html( await eta.renderAsync("index", {}) )
+      return throw_error(401, "incorrect session")
     }
 
     const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)
     if (provider === null || !providers.includes(provider)){
       console.log("ERROR: get provider ", provider)
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(511, "incorrect provider")
     }
 
     const tokens = await kvdb.get<Tokens>(["tokens", session_id]).then(entry => entry.value)
     if (tokens === null){
       console.log("ERROR: get tokens ", tokens)
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(511, "incorrect tokens")
     }
     
     const data = await fetch_profile_data(tokens.accessToken, session_id, provider)
     if (data === null) {
       console.log("ERROR: fetch profile data from", provider)
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(502, "incorrect response from oauth api")
     }
     
     const admin = is_admin(data.id)
     if (!admin) {
       console.log("ERROR: attempt to access admin panel without permission", provider)
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(403, "admin access required")
     }
     
     const records = await get_all_data_records()
 
-    return c.html(
-      await eta.renderAsync("admin", {data, admin, records})
-    );
+    try{
+      return c.html(
+        await eta.renderAsync("admin", {data, admin, records})
+      )
+    } catch(e){
+      console.log(e.toString())
+      return throw_error(500, "admin template damaged")
+    }
+
   }
 )
 

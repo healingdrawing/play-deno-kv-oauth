@@ -14,34 +14,37 @@ app.get("/",
     if (session_id === undefined || session_id === "") {
       console.log("WARNING: session_id ", session_id) //todo can be refactored or removed, since fires just on logout or first visit
       return c.html( await eta.renderAsync("index", {}) )
-      //todo return throw_error(401, "Custom error message") use this to manage errors
     }
 
     const provider = await kvdb.get<string>(["oauth2-providers", session_id]).then(entry => entry.value)
     if (provider === null || !providers.includes(provider)){
       console.log("ERROR: get provider ", provider)
-      return throw_error(500, "Internal Server Error")
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(511, "incorrect provider")
     }
 
     const tokens = await kvdb.get<Tokens>(["tokens", session_id]).then(entry => entry.value)
     if (tokens === null){
       console.log("ERROR: get tokens ", tokens)
-      return throw_error(500, "Internal Server Error")
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(511, "incorrect tokens")
     }
     
     const data = await fetch_profile_data(tokens.accessToken, session_id, provider)
     if (data === null) {
       console.log("ERROR: fetch profile data from", provider)
-      return c.html( await eta.renderAsync("error", {}) )
+      return throw_error(502, "incorrect response from oauth api")
     }
     
     if (is_admin(data.id)) console.log("Admin logged in at", new Date().toUTCString())
 
-    return c.html(
-      await eta.renderAsync("profile", {data, admin:is_admin(data.id)})
-    );
+    try{
+      return c.html(
+        await eta.renderAsync("profile", {data, admin:is_admin(data.id)})
+      )
+    } catch(e){
+      console.log(e.toString())
+      return throw_error(500, "profile template damaged")
+    }
+
   }
 )
 
