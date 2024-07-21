@@ -3,7 +3,6 @@ import {
   Hono, Tokens, kvdb, getSessionId, eta,
   providers, fetch_profile_data,
   is_admin,
-  throw_error,
 } from "../../deps.ts"
 
 const app = new Hono()
