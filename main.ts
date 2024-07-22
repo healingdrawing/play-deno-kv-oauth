@@ -1,11 +1,8 @@
-import { HTTPException } from "https://deno.land/x/hono@v4.3.11/mod.ts";
 import {
   Hono, csrf, bodyLimit, home, data, admin, export_file, import_file, manage, error_handler,
   signout,
   signin_google, callback_google,
   signin_x, callback_x,
-  throw_error,
-  eta,
   custom_http_exception,
 } from "./deps.ts"
 
