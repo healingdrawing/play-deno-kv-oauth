@@ -13,7 +13,7 @@ app.get("/",
       await kvdb.delete(["tokens", session_id])
       await kvdb.delete(["oauth2-providers", session_id])
     } else {
-      console.log("signout failed")
+      console.log("ERROR: signout failed", session_id)
     }
 
     const response = await signOut(c.req.raw)

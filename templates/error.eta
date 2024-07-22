@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Deno Form Example</title>
+  <title>Error <%= it.code %></title>
 </head>
 <body>
   <header>
-    <h1>Debug version of Server Error 500</h1>
+    <h1>Error <%= it.code %></h1>
   </header>
-  Some fail happens.
+  <%= it.info %>
   <a href="/">Home</a>
 </body>
 </html>
