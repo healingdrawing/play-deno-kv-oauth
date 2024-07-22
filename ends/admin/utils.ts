@@ -1,13 +1,14 @@
 import { BodyData } from "https://deno.land/x/hono@v4.3.11/utils/body.ts";
-import { loadSync, kvdb, Data, data_schema, data_with_id_schema } from "../../deps.ts";
+import { loadSync, kvdb, Data, data_schema, data_with_id_schema, dprint } from "../../deps.ts";
 loadSync({ export: true })
 
 function admins_list():string[] | null{
   const raw = Deno.env.get("ADMIN_IDS")
   if (raw === undefined) {return null}
   
-  const admins = raw.split(",")
+  const admins = raw.split(",").map<string>(x => x.trim())
   if (admins.includes("")){ return null}
+  console.log(dprint("ADMIN_IDS", admins.join("\n")))
   
   return admins
 }
