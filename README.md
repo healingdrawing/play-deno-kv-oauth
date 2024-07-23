@@ -2,13 +2,13 @@
 
 ## [Demo](https://crud-deno-hono-eta-oauth.deno.dev)  
 
-Double login (google, x/twitter) implementation for deno_kv_oauth + hono + eta.  
+Double login (google, x/twitter) + manage collected data using the admin panel.  
 
 ## Description 
 
 - [TypeScript](https://www.typescriptlang.org), backend rendered web application.  
 - [deno(runtime)](https://github.com/denoland/deno) + [hono(framework)](https://github.com/honojs/hono) + [eta(template render engine)](https://github.com/eta-dev/eta) based.  
-- [oauth2(Open Authorization)](https://oauth.net/2/) implemented for [google](https://accounts.google.com/) and [x/twitter](https://twitter.com) accounts, using deno_vk_oauth.  
+- [OAuth2(Open Authorization)](https://oauth.net/2/) implemented for [google](https://accounts.google.com/) and [x/twitter](https://twitter.com) accounts, using [deno_vk_oauth](https://github.com/denoland/deno_kv_oauth).  
 - common user can edit personal data record.  
 - admin panel used to manage data records collected from users.  
 - built-in [Deno KV](https://docs.deno.com/deploy/kv/manual/#deno-kv) used to manage database stuff.  
@@ -34,7 +34,7 @@ ADMIN_IDS=idfromappscreen,anotheradmin,commaseparated
 ## Requirements 
 
 - configured [deno](https://github.com/denoland/deno).  
-- correct `.env` file(otherwise oauth2 will fail).  
+- correct `.env` file(otherwise OAuth2 will fail).  
 
 Developed on linux.
 
